@@ -39,7 +39,32 @@ class MUploadKehadiran extends CI_Model
 		return $sSQL;
 	}
 
-	function listKehadiranAll($sCari,$sKdCabang)
+	function deleteAllAbsensi($sKdCabang, $sPeriode)
+	{
+		$xSQL = ("
+			DELETE FROM tx_absensi WHERE fs_kode_cabang = '".trim($sKdCabang)."' AND fd_tanggal LIKE '".trim($sPeriode)."%';
+		");
+
+		$sSQL = $this->db->query($xSQL);
+		return $sSQL;
+	}
+
+	function insertAllAbsensi($sKdCabang, $sPeriode)
+	{
+		$xSQL = ("
+			INSERT INTO tx_absensi 
+			SELECT fs_kode_cabang, fs_nama, date(fd_checktime) AS fd_tanggal,
+			min(fd_checktime) AS fs_masuk, max(fd_checktime) AS fs_keluar, 
+			TIMESTAMPDIFF(HOUR, min(fd_checktime), max(fd_checktime)) AS fn_jam 
+			FROM tx_checkinout WHERE fs_kode_cabang = '".trim($sKdCabang)."' AND fd_checktime LIKE '".trim($sPeriode)."%'
+			GROUP BY fd_tanggal, fs_nama;
+		");
+
+		$sSQL = $this->db->query($xSQL);
+		return $sSQL;
+	}
+
+	function listKehadiranAll($sCari, $sKdCabang)
 	{
 		$xSQL = ("
 			SELECT fs_kode_cabang, fs_nama, fd_checktime
@@ -74,7 +99,7 @@ class MUploadKehadiran extends CI_Model
 		}
 
 		$xSQL = $xSQL.("
-			ORDER BY fs_nama ASC LIMIT ".$nStart.",".$nLimit."
+			ORDER BY fd_checktime DESC LIMIT ".$nStart.",".$nLimit."
 		");
 
 		$sSQL = $this->db->query($xSQL);

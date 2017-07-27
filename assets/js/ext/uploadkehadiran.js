@@ -244,16 +244,6 @@ Ext.onReady(function() {
 		});
 	}
 
-	function fnReset()
-	{
-		//Ext.getCmp('fileXml').setValue('');
-	}
-
-	function fnCekExport()
-	{
-
-	}
-
 	var frmKehadiran = Ext.create('Ext.form.Panel', {
 		border: false,
 		frame: true,
@@ -318,17 +308,6 @@ Ext.onReady(function() {
 			items: [
 				gridKehadiran
 			]
-		}],
-		buttons: [{
-			iconCls: 'icon-save',
-			id: 'btnSave',
-			name: 'btnSave',
-			text: 'Export Excel',
-			//handler: fnCekExport
-		},{
-			iconCls: 'icon-reset',
-			text: 'Reset',
-			handler: fnReset
 		}]
 	});
 

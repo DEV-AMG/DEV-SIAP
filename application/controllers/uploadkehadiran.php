@@ -161,25 +161,35 @@ class Uploadkehadiran extends CI_Controller
 
 				// check time in first row XML
 				$periode_xml = date("Y-m", strtotime($xml->ROWDATA->ROW['CHECKTIME']));
-
+				
+				/* check file if same periode it self
+				foreach ($xml->ROWDATA->ROW as $val) {
+					echo $val['CHECKTIME'];
+				}
+				*/
+				
 				if ($periode_param == $periode_xml) {
 					// delete old rows before replace new rows 
-					// hapus data sesuai kode cabang dan parameter bulan
+					// hapus data sesuai kode cabang dan parameter bulan di table tx_checkinput
 					$this->mUploadKehadiran->deleteAllByMonth($kdcabang, $periode_param);
+					// hapus data sesuai kode cabang dan parameter bulan di table tx_absensi
+					$this->mUploadKehadiran->deleteAllAbsensi($kdcabang, $periode_param);
 
 					// looping insert to db
 					// memasukan data baru dari XML
 					foreach ($xml->ROWDATA->ROW as $val) {
-						$company =  $val['DEFAULTDEPTID'];
 						$name = $val['Name'];
 						$checktime = $val['CHECKTIME'];
 						$data = array(
 								'fs_kode_cabang' => $kdcabang,
-								'fs_nama' => strval($name),
+								'fs_nama' => strval(strtoupper($name)),
 								'fd_checktime' => date("Y-m-d H:i:s", strtotime($checktime))
 							);
 						$this->db->insert('tx_checkinout', $data);
 					}
+
+					// insert to tx_absensi
+					$this->mUploadKehadiran->insertAllAbsensi($kdcabang, $periode_param);
 
 					// set flag
 					$update = array(
@@ -197,7 +207,6 @@ class Uploadkehadiran extends CI_Controller
 							'hasil' => 'Synchronize Data Sukses!!'
 					);
 					echo json_encode($hasil);
-
 				} else {
 					$update = array(
 									'fs_flag_deleted' => 1

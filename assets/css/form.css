@@ -173,6 +173,10 @@ body {
     background-image: url(img/hmenu-asc.png) !important;
 }
 
+.icon-view {
+    background-image: url(img/view.png) !important;
+}
+
 .icon-notif {
     background-image: url(img/notification.png) !important;
 }
