@@ -303,6 +303,17 @@ Ext.onReady(function() {
 		});
 	}
 
+
+	Ext.Ajax.request({
+		  url: 'http://www.google.com',
+		  success: function(data) {
+		    alert('Connection.');
+		  },
+		  error: function(data) {
+		    alert('No Connection.');
+		  }
+	});
+
 	Ext.Ajax.request({
 		method: 'POST',
 		url: 'mainmenu/ambildefa',
@@ -331,6 +342,11 @@ Ext.onReady(function() {
 			});
 		}
 	});
+
+	Ext.Ajax.timeout = 300000; // 300 seconds 
+	Ext.override(Ext.form.Basic, {     timeout: Ext.Ajax.timeout / 1000 });
+	Ext.override(Ext.data.proxy.Server, {     timeout: Ext.Ajax.timeout });
+	Ext.override(Ext.data.Connection, {     timeout: Ext.Ajax.timeout });
 
 	Ext.get('loading').destroy();
 });

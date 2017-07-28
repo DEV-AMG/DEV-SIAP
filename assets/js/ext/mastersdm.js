@@ -26,9 +26,22 @@ Ext.onReady(function() {
 		});
 	}
 
+	var cellEditingProd = Ext.create('Ext.grid.plugin.CellEditing', {
+		clicksToEdit: 2
+	});
+
+	function gridTooltipProd(view) {
+		view.tip = Ext.create('Ext.tip.ToolTip', {
+			delegate: view.itemSelector,
+			html: 'Double click on the Qty to edit',
+			target: view.el,
+			trackMouse: true
+		});
+	}
+
 	var grupNik= Ext.create('Ext.data.Store', {
 		fields: [
-			'fs_nik','fs_nama'
+			'fs_nik','fs_nama','fs_kode_cabang'
 		],
 		proxy: {
 			actionMethods: {
@@ -97,8 +110,8 @@ Ext.onReady(function() {
 		columns: [{
 			dataIndex: 'fs_kode_cabang',
 			menuDisabled: true,
-			text: 'Kode Parent',
-			width: 45
+			text: 'Kode Jabatan',
+			width: 10
 		},{
 			dataIndex: 'fs_kode_jabatan',
 			menuDisabled: true,
@@ -191,6 +204,55 @@ Ext.onReady(function() {
 		xtype: 'textfield'
 	};
 
+	var txtKodeCabangs = {
+		anchor: '50%',
+		fieldLabel: 'Nama',
+		id: 'txtKodeCabangs',
+		hidden:true,
+		enforceMaxLength: true,
+		minLength: '0',
+		maxLength: '30', 
+		name: 'txtKodeCabangs',
+		xtype: 'textfield'
+	};
+
+	var txtKodeCabangs2 = {
+		anchor: '50%',
+		fieldLabel: 'Nama',
+		id: 'txtKodeCabangs2',
+		hidden:true,
+		enforceMaxLength: true,
+		minLength: '0',
+		maxLength: '30', 
+		name: 'txtKodeCabangs2',
+		xtype: 'textfield'
+	};
+
+
+	var txtKodeJabatans = {
+		anchor: '50%',
+		fieldLabel: 'Nama',
+		id: 'txtKodeJabatans',
+		hidden:true,
+		enforceMaxLength: true,
+		minLength: '0',
+		maxLength: '30', 
+		name: 'txtKodeJabatans',
+		xtype: 'textfield'
+	};
+
+	var txtKodeJabatans2 = {
+		anchor: '50%',
+		fieldLabel: 'Nama',
+		id: 'txtKodeJabatans2',
+		hidden:true,
+		enforceMaxLength: true,
+		minLength: '0',
+		maxLength: '30', 
+		name: 'txtKodeJabatans2',
+		xtype: 'textfield'
+	};
+
 	var txtEmail = {
 		afterLabelTextTpl: required,
 		allowBlank: false,
@@ -241,8 +303,8 @@ Ext.onReady(function() {
 		columns: [{
 			dataIndex: 'fs_kode_cabang',
 			menuDisabled: true,
-			text: 'Kode cabang',
-			width: 45
+			text: 'Kode Cabang',
+			width: 100
 		},{
 			dataIndex: 'fs_nama_cabang',
 			menuDisabled: true, 
@@ -278,173 +340,6 @@ Ext.onReady(function() {
 		}
 	});
 
-	 var win = Ext.create('Ext.window.Window', {
-		border: false,
-		closable: false,
-		draggable: false,
-		frame: false,
-		height: 450,
-		layout: 'fit',
-		minHeight: 580,
-		maxHeight: 580,
-		minWidth: 990,
-		maxWidth: 990,
-		title: 'Siap',
-		width: 500,
-		items: [
-			 Ext.create('Ext.form.Panel', {
-					border: false,
-					frame: true,
-					region: 'center',
-					autoDestroy:true,
-					title: 'Master SDM',
-					items: [{
-						activeTab: 0,
-						bodyStyle: 'padding: 5px; background-color: '.concat(gBasePanel),
-						border: false,
-						plain: true,
-						xtype: 'tabpanel',
-						items: [{
-							bodyStyle: 'background-color: '.concat(gBasePanel),
-							border: false,
-							frame: false,
-							title: 'Master SDM',
-							xtype: 'form',
-							items: [{
-								fieldDefaults: {
-									labelAlign: 'right',
-									labelSeparator: '',
-									labelWidth: 80,
-									msgTarget: 'side'
-								},
-								style: 'padding: 5px;',
-								xtype: 'fieldset',
-								items: [
-								{
-										anchor: '100%',
-										layout: 'hbox',
-										xtype: 'container',
-										items: [{
-											flex: 1.4,
-											layout: 'anchor',
-											xtype: 'container',
-											items: [{
-												anchor: '98%',
-												style: 'padding: 5px;',
-												title: 'SDM',
-												height: 535,
-												xtype: 'fieldset',
-												items: [
-														 {
-															afterLabelTextTpl: required,
-															allowBlank: false,
-															anchor: '100%',
-															fieldLabel: 'Nik',
-															id: 'txtNikk',
-															enforceMaxLength: true,
-															minLength: '0',
-															maxLength: '50',
-															fieldStyle: 'background-color: #eee; background-image: none;', 
-															value: '',
-															readOnly:true,
-															name: 'txtNikk',
-															xtype: 'textfield'
-														},
-														{
-															afterLabelTextTpl: required,
-															allowBlank: false,
-															anchor: '100%',
-															fieldLabel: 'Nama',
-															id: 'txtNamaa',
-															enforceMaxLength: true,
-															minLength: '0',
-															maxLength: '50',
-															fieldStyle: 'background-color: #eee; background-image: none;', 
-															value: '',
-															readOnly:true,
-															name: 'txtNamaa',
-															xtype: 'textfield'
-														},
-														{
-															afterLabelTextTpl: required,
-															allowBlank: false,
-															anchor: '100%',
-															fieldLabel: 'Tgl Join',
-															id: 'txtTglJoin2',
-															enforceMaxLength: true,
-															minLength: '0',
-															maxLength: '50',
-															fieldStyle: 'background-color: #eee; background-image: none;', 
-															value: '',
-															readOnly:true,
-															name: 'txtTglJoin2',
-															xtype: 'textfield'
-														},
-														{
-														bodyCls: 'x-panel-body-default-framed',
-														buttons: [{
-														iconCls: 'icon-delete',
-														text: 'Unregistrasi',
-														handler: fnCekUnreg
-													},{
-
-														flex: 0.9,
-														layout: 'anchor',
-														xtype: 'container',
-														items: []
-													
-													}]}
-													]
-											}]
-										},{
-											flex: 1,
-											layout: 'anchor',
-											xtype: 'container',
-											items: [{
-												style: 'padding: 5px;',
-												title: 'Cabang',
-												items: [
-													gridDetil3,
-												]
-											}]
-										},
-										{
-											flex: 1,
-											layout: 'anchor',
-											xtype: 'container',
-											items: [{
-												style: 'padding: 5px;',
-												title: 'Jabatan',
-												items: [
-													gridDetil4,
-												]
-											}]
-										}]
-									}
-								]
-							}]
-						}]
-					}]
-				})
-		],
-		listeners: {
-			beforehide: function() {
-				vMask.hide();
-			},
-			beforeshow: function() {
-				grupGridDetil3.load();
-				grupGridDetil4.load();
-				vMask.show();
-			}
-		},
-		buttons: [{
-			text: 'Cancel',
-			handler: function() {
-				vMask.hide();
-				win.hide();
-			}
-		}]
-	});
 
 	var winGrid = Ext.create('Ext.grid.Panel', {
 		autoDestroy: true,
@@ -476,9 +371,12 @@ Ext.onReady(function() {
 			{
 				Ext.getCmp('cboNIK').setValue(record.get('fs_nik'));
 				Ext.getCmp('txtNikk').setValue(record.get('fs_nik'));
+				Ext.getCmp('txtKodeCabangUn').setValue(record.get('fs_kode_cabang'));
 				Ext.getCmp('txtNamaa').setValue(record.get('fs_nama'));
 				Ext.getCmp('txtTglJoin2').setValue(record.get('fd_tanggal_bergabung'));
 				
+
+				grupKodeTrans3.load();
 				winCari.hide();
 				vMask.show();
 				win.show();
@@ -1361,10 +1259,6 @@ Ext.onReady(function() {
 
 	function fnCekUnreg() {
 		if (this.up('form').getForm().isValid()) {
-
-			Ext.Ajax.on('beforerequest', fnMaskShow);
-			Ext.Ajax.on('requestcomplete', fnMaskHide);
-			Ext.Ajax.on('requestexception', fnMaskHide);	
 			
 			Ext.Ajax.request({
 				method: 'POST',
@@ -1625,35 +1519,18 @@ Ext.onReady(function() {
 
 	function fnCekSimpan() {
 		if (this.up('form').getForm().isValid()) {
-
+		
 		var xNamaCabang = '';
 		var xNamaJabatan= '';
 		var xKdCabang = '';
 		var xKdJabatan = '';
-		var store = gridDetil.getStore();
-		
+			
+		var store = gridKode.getStore();
 		store.each(function(record, idx) {
-			if (record.get('fb_cek') === true) {
 				xKdCabang = xKdCabang +'|'+ record.get('fs_kode_cabang');
-				xNamaCabang = xNamaCabang +'|'+ record.get('fs_nama_cabang');
-			}
-		});
-
-
-
-		var store2 = gridDetil2.getStore();
-		
-		store2.each(function(record, idx) {
-			if (record.get('fb_cek2') === true) {
 				xKdJabatan = xKdJabatan +'|'+ record.get('fs_kode_jabatan');
-				xNamaJabatan = xNamaJabatan +'|'+ record.get('fs_nama_jabatan');
-			}
-		});
-
-
-			Ext.Ajax.on('beforerequest', fnMaskShow);
-			Ext.Ajax.on('requestcomplete', fnMaskHide);
-			Ext.Ajax.on('requestexception', fnMaskHide);	
+				
+			});	
 			
 			Ext.Ajax.request({
 				method: 'POST',
@@ -1693,6 +1570,82 @@ Ext.onReady(function() {
 								fn: function(btn) {
 									if (btn == 'yes') {
 										fnSimpan();
+										//gridKode.getStore().load();
+									}
+								}
+							});
+						
+					}
+				},
+				failure: function(response) {
+					var xText = Ext.decode(response.responseText);
+					Ext.MessageBox.show({
+						buttons: Ext.MessageBox.OK,
+						closable: false,
+						icon: Ext.MessageBox.INFO,
+						msg: 'Simpan Gagal, Koneksi Gagal',
+						title: 'Siap'
+					});
+					fnMaskHide();
+				}
+			});
+		}
+	}
+
+	function fnCekUpdate() {
+		if (this.up('form').getForm().isValid()) {
+		
+		var xNamaCabang = '';
+		var xNamaJabatan= '';
+		var xKdCabang = '';
+		var xKdJabatan = '';
+			
+		var store = gridKode2.getStore();
+		store.each(function(record, idx) {
+				xKdCabang = xKdCabang +'|'+ record.get('fs_kode_cabang');
+				xKdJabatan = xKdJabatan +'|'+ record.get('fs_kode_jabatan');
+				
+			});	
+			
+			Ext.Ajax.request({
+				method: 'POST',
+				url: 'mastersdm/CekSimpan',
+				params: {
+				'fs_kode_cabang': xKdCabang,
+				'fs_kode_jabatan': xKdJabatan,
+				'fs_nik': Ext.getCmp('cboNIK').getValue(),
+				'fs_nama': Ext.getCmp('txtNama').getValue(),
+				'fd_tanggal_bergabung': Ext.getCmp('tglBergabung').getValue(),
+				'fs_akses_sistem': Ext.getCmp('cboAkses').getValue(),
+				'fs_kode_cabang2': Ext.getCmp('txtKodeCabang').getValue(),
+				'fs_nama_cabang': Ext.getCmp('cboCabang').getValue(),
+				'fs_nama_jabatan': Ext.getCmp('cboJabatan').getValue(),
+				'fs_kode_jabatan2': Ext.getCmp('txtKodeJabatan').getValue()
+				},
+				success: function(response) {
+					var xText = Ext.decode(response.responseText);
+					
+					if (xText.sukses === false) {
+						Ext.MessageBox.show({
+							buttons: Ext.MessageBox.OK,
+							closable: false,
+							icon: Ext.MessageBox.INFO,
+							msg: xText.hasil,
+							title: 'Siap'
+						});
+					}
+					else {
+					
+							Ext.MessageBox.show({
+								buttons: Ext.MessageBox.YESNO,
+								closable: false,
+								icon: Ext.MessageBox.QUESTION,
+								msg: xText.hasil,
+								title: 'Siap',
+								fn: function(btn) {
+									if (btn == 'yes') {
+										fnSimpan2();
+										//gridKode.getStore().load();
 									}
 								}
 							});
@@ -1719,28 +1672,14 @@ Ext.onReady(function() {
 		var xNamaJabatan= '';
 		var xKdCabang = '';
 		var xKdJabatan = '';
-		var store = gridDetil.getStore();
-		
+			
+		var store = gridKode.getStore();
 		store.each(function(record, idx) {
-			if (record.get('fb_cek') === true) {
 				xKdCabang = xKdCabang +'|'+ record.get('fs_kode_cabang');
-				xNamaCabang = xNamaCabang +'|'+ record.get('fs_nama_cabang');
-			}
-		});
-
-
-		var store2 = gridDetil2.getStore();
-		
-		store2.each(function(record, idx) {
-			if (record.get('fb_cek2') === true) {
 				xKdJabatan = xKdJabatan +'|'+ record.get('fs_kode_jabatan');
-				xNamaJabatan = xNamaJabatan +'|'+ record.get('fs_nama_jabatan');
-			}
-		});
+				
+			});
 
-		Ext.Ajax.on('beforerequest', fnMaskShow);
-		Ext.Ajax.on('requestcomplete', fnMaskHide);
-		Ext.Ajax.on('requestexception', fnMaskHide);
 		
 		Ext.Ajax.request({
 			method: 'POST',
@@ -1766,7 +1705,77 @@ Ext.onReady(function() {
 					msg: xText.hasil,
 					title: 'Siap'
 				});
+			 	//var selection = gridKode.getView().getSelectionModel().getSelection()[0];
+               // store.remove(selection);
+                
+
+
+                //gridKode.getStore().load();
+                //gridKode.getView().refresh();
 				fnReset();
+				
+			},
+			failure: function(response) {
+				var xText = Ext.decode(response.responseText);
+				Ext.MessageBox.show({
+					buttons: Ext.MessageBox.OK,
+					closable: false,
+					icon: Ext.MessageBox.INFO,
+					msg: 'Simpan Gagal, Koneksi Gagal',
+					title: 'ototicket'
+				});
+				fnMaskHide();
+			}
+		});
+	}
+
+	function fnSimpan2() {
+		var xNamaCabang = '';
+		var xNamaJabatan= '';
+		var xKdCabang = '';
+		var xKdJabatan = '';
+			
+		var store = gridKode2.getStore();
+		store.each(function(record, idx) {
+				xKdCabang = xKdCabang +'|'+ record.get('fs_kode_cabang');
+				xKdJabatan = xKdJabatan +'|'+ record.get('fs_kode_jabatan');
+				
+			});
+
+		
+		Ext.Ajax.request({
+			method: 'POST',
+			url: 'mastersdm/Update',
+			params: {
+				'fs_kode_cabang': xKdCabang,
+				'fs_kode_jabatan': xKdJabatan,
+				'fs_nik': Ext.getCmp('txtNikk').getValue(),
+				'fs_kode_cabang_fix': Ext.getCmp('txtKodeCabangUn').getValue(),
+				'fd_tanggal_dibuat': Ext.Date.format(new Date(), 'Y-m-d')
+			},
+			success: function(response) {
+				var xText = Ext.decode(response.responseText);
+				
+				Ext.MessageBox.show({
+								buttons: Ext.MessageBox.YESNO,
+								closable: false,
+								icon: Ext.MessageBox.QUESTION,
+								msg: xText.hasil,
+								title: 'MFAS',
+								fn: function(btn) {
+									if (btn == 'yes') {
+										 var selection = gridKode2.getView().getSelectionModel().getSelection()[0];
+						                    if (selection) {
+						                        store.remove(selection);
+						                    }
+
+						                    window.location.href = 'mastersdm';
+									}
+								}
+							});
+			 
+			
+				
 			},
 			failure: function(response) {
 				var xText = Ext.decode(response.responseText);
@@ -1794,9 +1803,1342 @@ Ext.onReady(function() {
 		Ext.getCmp('cboAkses').setValue('');
 		Ext.getCmp('tglBergabung').setValue('');
 
-		grupGridDetil.load();
-		grupGridDetil2.load();
+		 //xt.getCmp('myGridID').getStore().load();
+                //Ext.getCmp('myGridID').getView().refresh();
+
+		//gridKode.getStore().load();
+
+		gridKode.getStore().removeAll();
+		gridKode.getStore().sync();
+		gridKode.getView().refresh()
+
+		//grupGridDetil2.load();
 	}
+
+	Ext.define('DataGridProd', {
+		extend: 'Ext.data.Model',
+		fields: [
+			{name: 'fs_kode_cabang', type: 'string'},
+			{name: 'fs_kode_jabatan', type: 'string'},
+			{name: 'fs_nik', type: 'string'}
+		]
+	});
+
+	Ext.define('DataGridProd2', {
+		extend: 'Ext.data.Model',
+		fields: [
+			{name: 'fs_kode_cabang', type: 'string'},
+			{name: 'fs_kode_jabatan', type: 'string'},
+			{name: 'fs_nik', type: 'string'}
+		]
+	});
+
+	var grupKodeCabang = Ext.create('Ext.data.Store', {
+		autoLoad: false,
+		fields: [
+			'fs_kode_cabang','fs_nama_cabang'
+		],
+		proxy: {
+			actionMethods: {
+				read: 'POST'
+			},
+			reader: {
+				rootProperty: 'hasil',
+				totalProperty: 'total',
+				type: 'json',
+			},
+			type: 'ajax',
+			url: 'mastersdm/ambil_cabang'
+		},
+		listeners: {
+			beforeload: function(store) {
+				Ext.apply(store.getProxy().extraParams, {
+				  'fs_cari': Ext.getCmp('txtCari19').getValue(),
+				});
+			}
+		}
+	});
+
+	var grupKodeCabang2 = Ext.create('Ext.data.Store', {
+		autoLoad: false,
+		fields: [
+			'fs_kode_cabang','fs_nama_cabang'
+		],
+		proxy: {
+			actionMethods: {
+				read: 'POST'
+			},
+			reader: {
+				rootProperty: 'hasil',
+				totalProperty: 'total',
+				type: 'json',
+			},
+			type: 'ajax',
+			url: 'mastersdm/ambil_cabang'
+		},
+		listeners: {
+			beforeload: function(store) {
+				Ext.apply(store.getProxy().extraParams, {
+				  'fs_cari': Ext.getCmp('txtCari191').getValue(),
+				});
+			}
+		}
+	});
+
+	var grupKodeJabatan = Ext.create('Ext.data.Store', {
+		autoLoad: false,
+		fields: [
+			'fs_kode_jabatan','fs_nama_jabatan'
+		],
+		proxy: {
+			actionMethods: {
+				read: 'POST'
+			},
+			reader: {
+				rootProperty: 'hasil',
+				totalProperty: 'total',
+				type: 'json',
+			},
+			type: 'ajax',
+			url: 'mastersdm/ambil_jabatan'
+		},
+		listeners: {
+			beforeload: function(store) {
+				Ext.apply(store.getProxy().extraParams, {
+				  'fs_cari': Ext.getCmp('txtCari20').getValue(),
+				});
+			}
+		}
+	});
+
+	var grupKodeJabatan2 = Ext.create('Ext.data.Store', {
+		autoLoad: false,
+		fields: [
+			'fs_kode_jabatan','fs_nama_jabatan'
+		],
+		proxy: {
+			actionMethods: {
+				read: 'POST'
+			},
+			reader: {
+				rootProperty: 'hasil',
+				totalProperty: 'total',
+				type: 'json',
+			},
+			type: 'ajax',
+			url: 'mastersdm/ambil_jabatan'
+		},
+		listeners: {
+			beforeload: function(store) {
+				Ext.apply(store.getProxy().extraParams, {
+				  'fs_cari': Ext.getCmp('txtCari201').getValue(),
+				});
+			}
+		}
+	});
+
+	var grupKodeTrans2 = Ext.create('Ext.data.Store', {
+		autoLoad: false,
+		model: 'DataGridProd',
+		proxy: {
+			actionMethods: {
+				read: 'POST'
+			},
+			reader: {
+				rootProperty: 'hasil',
+				totalProperty: 'total',
+				type: 'json',
+			},
+			type: 'ajax',
+			url: 'mastersdm/grid_sdm'
+		},
+		listeners: {
+			beforeload: function(store) {
+				Ext.apply(store.getProxy().extraParams, {
+				  //'fs_nik': ''
+				});
+			},
+			load: function() {
+				var xtotal = grupKodeTrans2.getCount();
+				
+				if (xtotal > 0) {
+					var store = gridKode.getStore();
+					var xqty = 0;
+					
+					gridKode.getSelectionModel().select(0);
+				}
+			}
+		}
+	});
+
+	var grupKodeTrans3 = Ext.create('Ext.data.Store', {
+		autoLoad: false,
+		model: 'DataGridProd2',
+		proxy: {
+			actionMethods: {
+				read: 'POST'
+			},
+			reader: {
+				rootProperty: 'hasil',
+				totalProperty: 'total',
+				type: 'json',
+			},
+			type: 'ajax',
+			url: 'mastersdm/grid_sdm2'
+		},
+		listeners: {
+			beforeload: function(store) {
+				Ext.apply(store.getProxy().extraParams, {
+				'fs_nik': Ext.getCmp('txtNikk').getValue()
+				});
+			},
+			load: function() {
+				var xtotal = grupKodeTrans3.getCount();
+				
+				if (xtotal > 0) {
+					var store = gridKode2.getStore();
+					var xqty = 0;
+					
+					gridKode2.getSelectionModel().select(0);
+				}
+			}
+		}
+	});
+
+	var winGridKodeCabang = Ext.create('Ext.grid.Panel', {
+		//autoDestroy: true,
+		autoDestroy: true,
+		height: 450,
+		width: 430,
+		sortableColumns: false,
+		store: grupKodeCabang,
+		bbar: Ext.create('Ext.PagingToolbar', {
+			pageSize: 500,
+			plugins: Ext.create('Ext.ux.ProgressBarPager', {}),
+			store: grupKodeCabang,
+			items:[
+				'-', {
+				text: 'Keluar',
+				handler: function() {
+					Ext.getCmp('txtCari19').setValue('');	
+					winCariKodeCabang.hide();
+				}
+			}]
+		}),
+		columns: [
+			{xtype: 'rownumberer', width: 45},
+			{text: 'Kode', dataIndex: 'fs_kode_cabang', menuDisabled: true, width: 100},
+			{text: 'Nama Cabang', dataIndex: 'fs_nama_cabang', menuDisabled: true, width: 260}
+			
+		],
+		tbar: [{
+			flex: 1,
+			layout: 'anchor',
+			xtype: 'container',
+			items: [{
+				anchor: '98%',
+				emptyText: 'Kode / Nama Cabang',
+				id: 'txtCari19',
+				name: 'txtCari19',
+				xtype: 'textfield'
+			}]
+		},{
+			flex: 0.2,
+			layout: 'anchor',
+			xtype: 'container',
+			items: [{
+				anchor: '100%',
+				text: 'Search',
+				xtype: 'button',
+				handler: function() {
+					grupKodeCabang.load();
+				}
+			}]
+		},{
+			flex: 0.5,
+			layout: 'anchor',
+			xtype: 'container',
+			items: []
+		}],
+		listeners: {
+			itemdblclick: function(grid, record)
+			{
+				Ext.getCmp('cboKodeCabang').setValue(record.get('fs_nama_cabang'));	
+				Ext.getCmp('txtKodeCabangs').setValue(record.get('fs_kode_cabang'));	
+				
+				winCariKodeCabang.hide();
+			}
+		},
+		viewConfig: {
+			getRowClass: function() {
+				return 'rowwrap';
+			}
+		}
+	});
+
+	var winGridKodeCabang2 = Ext.create('Ext.grid.Panel', {
+		//autoDestroy: true,
+		autoDestroy: true,
+		height: 450,
+		width: 430,
+		sortableColumns: false,
+		store: grupKodeCabang2,
+		bbar: Ext.create('Ext.PagingToolbar', {
+			pageSize: 500,
+			plugins: Ext.create('Ext.ux.ProgressBarPager', {}),
+			store: grupKodeCabang2,
+			items:[
+				'-', {
+				text: 'Keluar',
+				handler: function() {
+					Ext.getCmp('txtCari191').setValue('');	
+					winCariKodeCabang2.hide();
+				}
+			}]
+		}),
+		columns: [
+			{xtype: 'rownumberer', width: 45},
+			{text: 'Kode', dataIndex: 'fs_kode_cabang', menuDisabled: true, width: 100},
+			{text: 'Nama Cabang', dataIndex: 'fs_nama_cabang', menuDisabled: true, width: 260}
+			
+		],
+		tbar: [{
+			flex: 1,
+			layout: 'anchor',
+			xtype: 'container',
+			items: [{
+				anchor: '98%',
+				emptyText: 'Kode / Nama Cabang',
+				id: 'txtCari191',
+				name: 'txtCari191',
+				xtype: 'textfield'
+			}]
+		},{
+			flex: 0.2,
+			layout: 'anchor',
+			xtype: 'container',
+			items: [{
+				anchor: '100%',
+				text: 'Search',
+				xtype: 'button',
+				handler: function() {
+					grupKodeCabang2.load();
+				}
+			}]
+		},{
+			flex: 0.5,
+			layout: 'anchor',
+			xtype: 'container',
+			items: []
+		}],
+		listeners: {
+			itemdblclick: function(grid, record)
+			{
+				Ext.getCmp('cboKodeCabang2').setValue(record.get('fs_nama_cabang'));	
+				Ext.getCmp('txtKodeCabangs2').setValue(record.get('fs_kode_cabang'));	
+				
+				winCariKodeCabang2.hide();
+			}
+		},
+		viewConfig: {
+			getRowClass: function() {
+				return 'rowwrap';
+			}
+		}
+	});
+
+	var winGridKodeJabatan = Ext.create('Ext.grid.Panel', {
+		//autoDestroy: true,
+		autoDestroy: true,
+		height: 450,
+		width: 430,
+		sortableColumns: false,
+		store: grupKodeJabatan,
+		bbar: Ext.create('Ext.PagingToolbar', {
+			pageSize: 500,
+			plugins: Ext.create('Ext.ux.ProgressBarPager', {}),
+			store: grupKodeJabatan,
+			items:[
+				'-', {
+				text: 'Keluar',
+				handler: function() {
+					Ext.getCmp('txtCari20').setValue('');	
+					winCariKodeJabatan.hide();
+				}
+			}]
+		}),
+		columns: [
+			{xtype: 'rownumberer', width: 45},
+			{text: 'Kode', dataIndex: 'fs_kode_jabatan', menuDisabled: true, width: 100},
+			{text: 'Nama Jabatan', dataIndex: 'fs_nama_jabatan', menuDisabled: true, width: 260}
+			
+		],
+		tbar: [{
+			flex: 1,
+			layout: 'anchor',
+			xtype: 'container',
+			items: [{
+				anchor: '98%',
+				emptyText: 'Kode / Nama Jabatan',
+				id: 'txtCari20',
+				name: 'txtCari20',
+				xtype: 'textfield'
+			}]
+		},{
+			flex: 0.2,
+			layout: 'anchor',
+			xtype: 'container',
+			items: [{
+				anchor: '100%',
+				text: 'Search',
+				xtype: 'button',
+				handler: function() {
+					grupKodeJabatan.load();
+				}
+			}]
+		},{
+			flex: 0.5,
+			layout: 'anchor',
+			xtype: 'container',
+			items: []
+		}],
+		listeners: {
+			itemdblclick: function(grid, record)
+			{
+				Ext.getCmp('cboKodeJabatan').setValue(record.get('fs_nama_jabatan'));	
+				Ext.getCmp('txtKodeJabatans').setValue(record.get('fs_kode_jabatan'));	
+				
+				winCariKodeJabatan.hide();
+			}
+		},
+		viewConfig: {
+			getRowClass: function() {
+				return 'rowwrap';
+			}
+		}
+	});
+
+	var winGridKodeJabatan2 = Ext.create('Ext.grid.Panel', {
+		//autoDestroy: true,
+		autoDestroy: true,
+		height: 450,
+		width: 430,
+		sortableColumns: false,
+		store: grupKodeJabatan2,
+		bbar: Ext.create('Ext.PagingToolbar', {
+			pageSize: 500,
+			plugins: Ext.create('Ext.ux.ProgressBarPager', {}),
+			store: grupKodeJabatan2,
+			items:[
+				'-', {
+				text: 'Keluar',
+				handler: function() {
+					Ext.getCmp('txtCari201').setValue('');	
+					winCariKodeJabatan.hide();
+				}
+			}]
+		}),
+		columns: [
+			{xtype: 'rownumberer', width: 45},
+			{text: 'Kode', dataIndex: 'fs_kode_jabatan', menuDisabled: true, width: 100},
+			{text: 'Nama Jabatan', dataIndex: 'fs_nama_jabatan', menuDisabled: true, width: 260}
+			
+		],
+		tbar: [{
+			flex: 1,
+			layout: 'anchor',
+			xtype: 'container',
+			items: [{
+				anchor: '98%',
+				emptyText: 'Kode / Nama Jabatan',
+				id: 'txtCari201',
+				name: 'txtCari201',
+				xtype: 'textfield'
+			}]
+		},{
+			flex: 0.2,
+			layout: 'anchor',
+			xtype: 'container',
+			items: [{
+				anchor: '100%',
+				text: 'Search',
+				xtype: 'button',
+				handler: function() {
+					grupKodeJabatan2.load();
+				}
+			}]
+		},{
+			flex: 0.5,
+			layout: 'anchor',
+			xtype: 'container',
+			items: []
+		}],
+		listeners: {
+			itemdblclick: function(grid, record)
+			{
+				Ext.getCmp('cboKodeJabatan2').setValue(record.get('fs_nama_jabatan'));	
+				Ext.getCmp('txtKodeJabatans2').setValue(record.get('fs_kode_jabatan'));	
+				
+				winCariKodeJabatan2.hide();
+			}
+		},
+		viewConfig: {
+			getRowClass: function() {
+				return 'rowwrap';
+			}
+		}
+	});
+
+	var winCariKodeCabang = Ext.create('Ext.window.Window', {
+		border: false,
+		closable: false,
+		draggable: true,
+		frame: false,
+		layout: 'fit',
+		plain: true,
+		resizable: false,
+		title: 'Searching...',
+		items: [
+			winGridKodeCabang
+		],
+		listeners: {
+			beforehide: function() {
+				vMask.hide();
+			},
+			beforeshow: function() {
+				grupKodeCabang.load();
+				vMask.show();
+			}
+		}
+	});
+
+	var winCariKodeCabang2 = Ext.create('Ext.window.Window', {
+		border: false,
+		closable: false,
+		draggable: true,
+		frame: false,
+		layout: 'fit',
+		plain: true,
+		resizable: false,
+		title: 'Searching...',
+		items: [
+			winGridKodeCabang2
+		],
+		listeners: {
+			beforehide: function() {
+				vMask.hide();
+			},
+			beforeshow: function() {
+				grupKodeCabang2.load();
+				vMask.show();
+			}
+		}
+	});
+
+	var winCariKodeJabatan = Ext.create('Ext.window.Window', {
+		border: false,
+		closable: false,
+		draggable: true,
+		frame: false,
+		layout: 'fit',
+		plain: true,
+		resizable: false,
+		title: 'Searching...',
+		items: [
+			winGridKodeJabatan
+		],
+		listeners: {
+			beforehide: function() {
+				vMask.hide();
+			},
+			beforeshow: function() {
+				grupKodeJabatan.load();
+				vMask.show();
+			}
+		}
+	});
+
+	var winCariKodeJabatan2 = Ext.create('Ext.window.Window', {
+		border: false,
+		closable: false,
+		draggable: true,
+		frame: false,
+		layout: 'fit',
+		plain: true,
+		resizable: false,
+		title: 'Searching...',
+		items: [
+			winGridKodeJabatan2
+		],
+		listeners: {
+			beforehide: function() {
+				vMask.hide();
+			},
+			beforeshow: function() {
+				grupKodeJabatan2.load();
+				vMask.show();
+			}
+		}
+	});
+
+	var cboKodeCabang = {
+		anchor: '95%',
+				emptyText: 'Select a Kode',
+				fieldLabel: 'Kode Cabang',
+				id: 'cboKodeCabang',
+				labelAlign: 'top',
+				labelSeparator: '',
+				name: 'cboKodeCabang',
+				xtype: 'textfield',
+		listeners: {
+			change: function(field, newValue) {
+			}
+		},
+		triggers: {
+			reset: {
+				cls: 'x-form-clear-trigger',
+				handler: function(field) {
+					field.setValue('');
+				}
+			},
+			cari: {
+				cls: 'x-form-search-trigger',
+				handler: function() {
+					winCariKodeCabang.show();
+					winCariKodeCabang.center();
+				}
+			}
+		}
+	};
+
+	var cboKodeCabang2 = {
+		anchor: '95%',
+				emptyText: 'Select a Kode',
+				fieldLabel: 'Kode Cabang',
+				id: 'cboKodeCabang2',
+				labelAlign: 'top',
+				labelSeparator: '',
+				name: 'cboKodeCabang2',
+				xtype: 'textfield',
+		listeners: {
+			change: function(field, newValue) {
+			}
+		},
+		triggers: {
+			reset: {
+				cls: 'x-form-clear-trigger',
+				handler: function(field) {
+					field.setValue('');
+				}
+			},
+			cari: {
+				cls: 'x-form-search-trigger',
+				handler: function() {
+					winCariKodeCabang2.show();
+					winCariKodeCabang2.center();
+				}
+			}
+		}
+	};
+
+	var cboKodeJabatan2 = {
+		anchor: '95%',
+				emptyText: 'Select a Kode',
+				fieldLabel: 'Kode Jabatan',
+				id: 'cboKodeJabatan2',
+				labelAlign: 'top',
+				labelSeparator: '',
+				name: 'cboKodeJabatan2',
+				xtype: 'textfield',
+		listeners: {
+			change: function(field, newValue) {
+			}
+		},
+		triggers: {
+			reset: {
+				cls: 'x-form-clear-trigger',
+				handler: function(field) {
+					field.setValue('');
+				}
+			},
+			cari: {
+				cls: 'x-form-search-trigger',
+				handler: function() {
+					winCariKodeJabatan2.show();
+					winCariKodeJabatan2.center();
+				}
+			}
+		}
+	};
+
+	var cboKodeJabatan = {
+		anchor: '95%',
+				emptyText: 'Select a Kode',
+				fieldLabel: 'Kode Jabatan',
+				id: 'cboKodeJabatan',
+				labelAlign: 'top',
+				labelSeparator: '',
+				name: 'cboKodeJabatan',
+				xtype: 'textfield',
+		listeners: {
+			change: function(field, newValue) {
+			}
+		},
+		triggers: {
+			reset: {
+				cls: 'x-form-clear-trigger',
+				handler: function(field) {
+					field.setValue('');
+				}
+			},
+			cari: {
+				cls: 'x-form-search-trigger',
+				handler: function() {
+					winCariKodeJabatan.show();
+					winCariKodeJabatan.center();
+				}
+			}
+		}
+	};
+
+	var gridKode = Ext.create('Ext.grid.Panel', {
+		anchor: '100%',
+		id:'myGridID',
+		defaultType: 'textfield',
+		height: 470,
+		sortableColumns: false,
+		store: grupKodeTrans2,
+		columns: [{
+			dataIndex: 'fs_kode_cabang',
+			text: 'Kode cabang',
+			flex: 0.6,
+			menuDisabled: true
+		},{
+			dataIndex: 'fs_nama_cabang',
+			text: 'Nama Cabang',
+			flex: 1.25,
+			menuDisabled: true
+		},
+		{
+			dataIndex: 'fs_nama_jabatan',
+			text: 'Nama Fungsi',
+			flex: 1.25,
+			menuDisabled: true
+		}],
+		listeners: {
+			selectionchange: function(view, records) {
+				gridKode.down('#removeData').setDisabled(!records.length);
+			}
+		},
+		plugins: [
+			cellEditingProd
+		],
+		viewConfig: {
+			getRowClass: function() {
+				return 'rowwrap';
+			},
+			listeners: {
+				render: gridTooltipProd
+			},
+			markDirty: false,
+			stripeRows: true
+		},
+		bbar: [
+		/*{
+			iconCls: 'icon-delete',
+			itemId: 'removeData',
+			text: 'Delete',
+			handler: function() {
+				var record = gridKode.getSelectionModel().getSelection()[0];
+				
+				var xseqno = record.get('fs_seqno');
+				var arr_seqno = Array();
+				
+				grupGridReg.clearFilter();
+				var store = gridReg.getStore();
+				store.each(function(record, idx) {
+					arr_seqno.push(record.get('fs_seqno').trim());
+				});
+				
+				var xtotal = grupGridReg.getCount()-1;
+				var xxseqno = '';
+				for (i=xtotal;i>=0;i--) {
+					xxseqno = arr_seqno[i];
+					
+					if (xseqno.trim() == xxseqno.trim()) {
+						grupGridReg.removeAt(i);
+					}
+				}
+				
+				gridReg.getView().refresh();
+				
+				var sm = gridProd.getSelectionModel();
+				cellEditingProd.cancelEdit();
+				grupGridProd.remove(sm.getSelection());
+				gridProd.getView().refresh();
+				if (grupGridProd.getCount() > 0) {
+					sm.select(0);
+				}
+				Ext.getCmp('txtProdAktif').setValue('');
+				Ext.getCmp('txtProdAktif2').setValue('');
+			},
+			disabled: true
+		},*/{
+			xtype: 'tbfill',
+		},{
+			value: '<*Double click on the Qty to edit>',
+			xtype: 'displayfield'
+		}],
+		tbar: [
+		{
+			flex: 1,
+			layout: 'anchor',
+			xtype: 'container',
+			items: [
+				cboKodeCabang,
+				txtKodeCabangs
+			]
+		},{
+			flex: 1,
+			layout: 'anchor',
+			xtype: 'container',
+			items: [
+				cboKodeJabatan,
+				txtKodeJabatans
+			]
+		},
+		{
+			xtype: 'buttongroup',
+			columns: 1,
+			defaults: {
+				scale: 'small'
+			},
+			items: [
+			{
+								iconCls: 'icon-add',
+								text: 'Add',
+								handler: function() {
+									var xtotal = grupKodeTrans2.getCount();
+									var xcab = Ext.getCmp('cboKodeCabang').getValue();
+									var xcabkode = Ext.getCmp('txtKodeCabangs').getValue();
+									var xjab = Ext.getCmp('cboKodeJabatan').getValue();
+									var xjabkode = Ext.getCmp('txtKodeJabatans').getValue();
+									var xdata = Ext.create('DataGridProd', {
+										fs_nama_cabang: Ext.getCmp('cboKodeCabang').getValue(),
+										fs_kode_cabang: Ext.getCmp('txtKodeCabangs').getValue(),
+										fs_nama_jabatan: Ext.getCmp('cboKodeJabatan').getValue(),
+										fs_kode_jabatan: Ext.getCmp('txtKodeJabatans').getValue(),
+										//fn_qty: '0',
+										//fs_kd_unit: Ext.getCmp('cboUnit').getValue(),
+										//fs_seqno: zeroPad(xurut, 6)
+									});
+									
+									var store = gridKode.getStore();
+									var xlanjut = true;
+
+
+									store.each(function(record, idx) {
+										var xtext = record.get('fs_kode_cabang').trim();
+										var xtext2 = record.get('fs_kode_jabatan').trim();
+										
+										if (xtext == xcabkode && xtext2 == xjabkode) {
+											Ext.MessageBox.show({
+												buttons: Ext.MessageBox.OK,
+												closable: false,
+												icon: Ext.Msg.WARNING,
+												msg: 'Kode Cabang dan jabatan sudah ada, add struktur cancel!!',
+												title: 'MFAS'
+											});
+											xlanjut = false;
+										}
+
+										
+												
+														
+										
+									});
+
+									if (xcab === '') {
+										Ext.MessageBox.show({
+										buttons: Ext.MessageBox.OK,
+										closable: false,
+										icon: Ext.Msg.WARNING,
+										msg: 'Field Cabang masih kosong!',
+										title: 'MFAS'
+										});
+
+										xlanjut = false;
+
+										}
+
+										if (xjab === '') {
+										Ext.MessageBox.show({
+										buttons: Ext.MessageBox.OK,
+										closable: false,
+										icon: Ext.Msg.WARNING,
+										msg: 'Field Jabatan masih kosong!',
+										title: 'MFAS'
+										});
+
+										xlanjut = false;
+
+										}
+
+										if (xcab === '' && xjab === '') {
+										Ext.MessageBox.show({
+										buttons: Ext.MessageBox.OK,
+										closable: false,
+										icon: Ext.Msg.WARNING,
+										msg: 'Field Jabatan dan cabang masih kosong!',
+										title: 'MFAS'
+										});
+
+										xlanjut = false;
+
+										}
+
+									if (xlanjut === false) {
+										return;
+									}
+									
+									grupKodeTrans2.insert(xtotal, xdata);
+									Ext.getCmp('cboKodeJabatan').setValue('');
+									Ext.getCmp('txtKodeCabangs').setValue('');
+									Ext.getCmp('txtKodeJabatans').setValue('');
+									Ext.getCmp('cboKodeCabang').setValue('');
+									
+									xtotal = grupKodeTrans2.getCount() - 1;
+									gridKode.getSelectionModel().select(xtotal);
+
+								}
+							},
+				{
+				iconCls: 'icon-delete',
+				itemId: 'removeData',
+				text: 'Delete',
+				handler: function() {
+					var sm = gridKode.getSelectionModel();
+					cellEditingProd.cancelEdit();
+					grupKodeTrans2.remove(sm.getSelection());
+					gridKode.getView().refresh();
+					if (grupKodeTrans2.getCount() > 0) {
+						sm.select(0);
+					}
+					
+					var xprod = Ext.getCmp('txtProdAktif').getValue();
+					var xQty = 0;
+					store = gridKode.getStore();
+					store.each(function(record, idx) {
+						if (xprod.trim() == record.get('fs_kode_jabatan').trim()) {
+							xQty = xQty + 1;
+						}
+					});
+					gridKode.getView().refresh();
+				},
+				disabled: true
+			}]
+		}],
+		viewConfig: {
+			getRowClass: function() {
+				return 'rowwrap';
+			},
+			markDirty: false,
+			stripeRows: true
+		}
+	});
+
+	var gridKode2 = Ext.create('Ext.grid.Panel', {
+		anchor: '100%',
+		defaultType: 'textfield',
+		height: 470,
+		sortableColumns: false,
+		store: grupKodeTrans3,
+		columns: [{
+			xtype: 'rownumberer',
+			width: 25
+		},{
+			dataIndex: 'fs_kode_cabang',
+			text: 'Kode cabang',
+			flex: 0.6,
+			menuDisabled: true
+		},{
+			dataIndex: 'fs_nama_cabang',
+			text: 'Nama Cabang',
+			flex: 1.25,
+			menuDisabled: true
+		},
+		{
+			dataIndex: 'fs_kode_cabang',
+			hidden:true,
+			menuDisabled: true
+		},
+		{
+			dataIndex: 'fs_kode_jabatan',
+			hidden:true,
+			menuDisabled: true
+		},{
+			dataIndex: 'fs_nama_jabatan',
+			text: 'Nama Fungsi',
+			flex: 1.25,
+			menuDisabled: true
+		}],
+		listeners: {
+			selectionchange: function(view, records) {
+				gridKode2.down('#removeData').setDisabled(!records.length);
+			}
+		},
+		plugins: [
+			cellEditingProd
+		],
+		viewConfig: {
+			getRowClass: function() {
+				return 'rowwrap';
+			},
+			listeners: {
+				render: gridTooltipProd
+			},
+			markDirty: false,
+			stripeRows: true
+		},
+		bbar: [
+		/*{
+			iconCls: 'icon-delete',
+			itemId: 'removeData',
+			text: 'Delete',
+			handler: function() {
+				var record = gridKode.getSelectionModel().getSelection()[0];
+				
+				var xseqno = record.get('fs_seqno');
+				var arr_seqno = Array();
+				
+				grupGridReg.clearFilter();
+				var store = gridReg.getStore();
+				store.each(function(record, idx) {
+					arr_seqno.push(record.get('fs_seqno').trim());
+				});
+				
+				var xtotal = grupGridReg.getCount()-1;
+				var xxseqno = '';
+				for (i=xtotal;i>=0;i--) {
+					xxseqno = arr_seqno[i];
+					
+					if (xseqno.trim() == xxseqno.trim()) {
+						grupGridReg.removeAt(i);
+					}
+				}
+				
+				gridReg.getView().refresh();
+				
+				var sm = gridProd.getSelectionModel();
+				cellEditingProd.cancelEdit();
+				grupGridProd.remove(sm.getSelection());
+				gridProd.getView().refresh();
+				if (grupGridProd.getCount() > 0) {
+					sm.select(0);
+				}
+				Ext.getCmp('txtProdAktif').setValue('');
+				Ext.getCmp('txtProdAktif2').setValue('');
+			},
+			disabled: true
+		},*/{
+			xtype: 'tbfill',
+		},{
+			value: '<*Double click on the Qty to edit>',
+			xtype: 'displayfield'
+		}],
+		tbar: [
+		{
+			flex: 1,
+			layout: 'anchor',
+			xtype: 'container',
+			items: [
+				cboKodeCabang2,
+				txtKodeCabangs2
+			]
+		},{
+			flex: 1,
+			layout: 'anchor',
+			xtype: 'container',
+			items: [
+				cboKodeJabatan2,
+				txtKodeJabatans2
+			]
+		},
+		{
+			xtype: 'buttongroup',
+			columns: 1,
+			defaults: {
+				scale: 'small'
+			},
+			items: [
+			{
+								iconCls: 'icon-add',
+								text: 'Add',
+								handler: function() {
+									var xtotal = grupKodeTrans3.getCount();
+									var xcab = Ext.getCmp('cboKodeCabang2').getValue();
+									var xcabkode = Ext.getCmp('txtKodeCabangs2').getValue();
+									var xjab = Ext.getCmp('cboKodeJabatan2').getValue();
+									var xjabkode = Ext.getCmp('txtKodeJabatans2').getValue();
+									var xdata = Ext.create('DataGridProd2', {
+										fs_nama_cabang: Ext.getCmp('cboKodeCabang2').getValue(),
+										fs_kode_cabang: Ext.getCmp('txtKodeCabangs2').getValue(),
+										fs_nama_jabatan: Ext.getCmp('cboKodeJabatan2').getValue(),
+										fs_kode_jabatan: Ext.getCmp('txtKodeJabatans2').getValue(),
+										//fn_qty: '0',
+										//fs_kd_unit: Ext.getCmp('cboUnit').getValue(),
+										//fs_seqno: zeroPad(xurut, 6)
+									});
+									
+									var store = gridKode2.getStore();
+									var xlanjut = true;
+
+
+									store.each(function(record, idx) {
+										var xtext = record.get('fs_kode_cabang').trim();
+										var xtext2 = record.get('fs_kode_jabatan').trim();
+										
+										if (xtext == xcabkode && xtext2 == xjabkode) {
+											Ext.MessageBox.show({
+												buttons: Ext.MessageBox.OK,
+												closable: false,
+												icon: Ext.Msg.WARNING,
+												msg: 'Kode Cabang dan jabatan sudah ada, add struktur cancel!!',
+												title: 'MFAS'
+											});
+											xlanjut = false;
+										}
+
+									
+										
+									});
+									if (xlanjut === false) {
+										return;
+									}
+									
+									grupKodeTrans3.insert(xtotal, xdata);
+									Ext.getCmp('cboKodeJabatan2').setValue('');
+									Ext.getCmp('txtKodeCabangs2').setValue('');
+									Ext.getCmp('txtKodeJabatans2').setValue('');
+									Ext.getCmp('cboKodeCabang2').setValue('');
+									
+									xtotal = grupKodeTrans3.getCount() - 1;
+									gridKode2.getSelectionModel().select(xtotal);
+
+								}
+							},
+				{
+				iconCls: 'icon-delete',
+				itemId: 'removeData',
+				text: 'Delete',
+				handler: function() {
+					var sm = gridKode2.getSelectionModel();
+					cellEditingProd.cancelEdit();
+					grupKodeTrans3.remove(sm.getSelection());
+					gridKode2.getView().refresh();
+					if (grupKodeTrans3.getCount() > 0) {
+						sm.select(0);
+					}
+					
+					var xprod = Ext.getCmp('txtProdAktif').getValue();
+					var xQty = 0;
+					store = gridKode2.getStore();
+					store.each(function(record, idx) {
+						if (xprod.trim() == record.get('fs_kode_jabatan').trim()) {
+							xQty = xQty + 1;
+						}
+					});
+					gridKode2.getView().refresh();
+				},
+				disabled: true
+			}]
+		}],
+		viewConfig: {
+			getRowClass: function() {
+				return 'rowwrap';
+			},
+			markDirty: false,
+			stripeRows: true
+		}
+	});
+
+	 var win = Ext.create('Ext.window.Window', {
+			border: false,
+			closable: false,
+			draggable: false,
+			frame: false,
+			height: 450,
+			layout: 'fit',
+			minHeight: 580,
+			maxHeight: 580,
+			minWidth: 990,
+			maxWidth: 990,
+			title: 'Siap',
+			width: 500,
+			items: [
+				 Ext.create('Ext.form.Panel', {
+						border: false,
+						frame: true,
+						region: 'center',
+						autoDestroy:true,
+						title: 'Master SDM',
+						items: [{
+							activeTab: 0,
+							bodyStyle: 'padding: 5px; background-color: '.concat(gBasePanel),
+							border: false,
+							plain: true,
+							xtype: 'tabpanel',
+							items: [{
+								bodyStyle: 'background-color: '.concat(gBasePanel),
+								border: false,
+								frame: false,
+								title: 'Master SDM',
+								xtype: 'form',
+								items: [{
+									fieldDefaults: {
+										labelAlign: 'right',
+										labelSeparator: '',
+										labelWidth: 80,
+										msgTarget: 'side'
+									},
+									style: 'padding: 5px;',
+									xtype: 'fieldset',
+									items: [
+									{
+											anchor: '100%',
+											layout: 'hbox',
+											xtype: 'container',
+											items: [{
+												flex: 1,
+												layout: 'anchor',
+												xtype: 'container',
+												items: [{
+													anchor: '98%',
+													style: 'padding: 5px;',
+													title: 'SDM',
+													height: 535,
+													xtype: 'fieldset',
+													items: [
+															 {
+																afterLabelTextTpl: required,
+																allowBlank: false,
+																anchor: '100%',
+																fieldLabel: 'Nik',
+																id: 'txtNikk',
+																enforceMaxLength: true,
+																minLength: '0',
+																maxLength: '50',
+																fieldStyle: 'background-color: #eee; background-image: none;', 
+																value: '',
+																readOnly:true,
+																name: 'txtNikk',
+																xtype: 'textfield'
+															},
+															{
+																afterLabelTextTpl: required,
+																allowBlank: false,
+																anchor: '100%',
+																fieldLabel: 'Nik',
+																id: 'txtKodeCabangUn',
+																enforceMaxLength: true,
+																minLength: '0',
+																maxLength: '50',
+																fieldStyle: 'background-color: #eee; background-image: none;', 
+																value: '',
+																hidden:true,
+																name: 'txtKodeCabangUn',
+																xtype: 'textfield'
+															},
+															{
+																afterLabelTextTpl: required,
+																allowBlank: false,
+																anchor: '100%',
+																fieldLabel: 'Nama',
+																id: 'txtNamaa',
+																enforceMaxLength: true,
+																minLength: '0',
+																maxLength: '50',
+																fieldStyle: 'background-color: #eee; background-image: none;', 
+																value: '',
+																readOnly:true,
+																name: 'txtNamaa',
+																xtype: 'textfield'
+															},
+															{
+																afterLabelTextTpl: required,
+																allowBlank: false,
+																anchor: '100%',
+																fieldLabel: 'Tgl Join',
+																id: 'txtTglJoin2',
+																enforceMaxLength: true,
+																minLength: '0',
+																maxLength: '50',
+																fieldStyle: 'background-color: #eee; background-image: none;', 
+																value: '',
+																readOnly:true,
+																name: 'txtTglJoin2',
+																xtype: 'textfield'
+															},
+															{
+															bodyCls: 'x-panel-body-default-framed',
+															buttons: [{
+															iconCls: 'icon-save',
+															text: 'Update',
+															handler: fnSimpan2
+														},
+														{
+															iconCls: 'icon-delete',
+															text: 'Unregistrasi',
+															handler: fnCekUnreg
+														},
+														{
+
+															flex: 0.9,
+															layout: 'anchor',
+															xtype: 'container',
+															items: []
+														
+														}]
+													}
+													]
+												}]
+											},{
+												flex: 1.5,
+												layout: 'anchor',
+												xtype: 'container',
+												items: [{
+													style: 'padding: 5px;',
+													title: 'Struktur Fungsi',
+													items: [
+														gridKode2,
+													]
+												}]
+											}]
+										}
+									]
+								}]
+							}]
+						}]
+					})
+			],
+			listeners: {
+				beforehide: function() {
+					vMask.hide();
+				},
+				beforeshow: function() {
+					grupGridDetil3.load();
+					grupGridDetil4.load();
+					vMask.show();
+				}
+			},
+			buttons: [{
+				text: 'Cancel',
+				handler: function() {
+					vMask.hide();
+					win.hide();
+				}
+			}]
+		});
 
 	var frmSetupVariabelTipe = Ext.create('Ext.form.Panel', {
 		border: false,
@@ -1869,26 +3211,14 @@ Ext.onReady(function() {
 										]
 								}]
 							},{
-								flex: 1,
+								flex: 2,
 								layout: 'anchor',
 								xtype: 'container',
 								items: [{
 									style: 'padding: 5px;',
 									title: 'Cabang',
 									items: [
-										gridDetil,
-									]
-								}]
-							},
-							{
-								flex: 1,
-								layout: 'anchor',
-								xtype: 'container',
-								items: [{
-									style: 'padding: 5px;',
-									title: 'Jabatan',
-									items: [
-										gridDetil2,
+										gridKode,
 									]
 								}]
 							}]

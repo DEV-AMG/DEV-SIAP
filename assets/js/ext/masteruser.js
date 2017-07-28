@@ -52,6 +52,63 @@ Ext.onReady(function() {
 		}
 	});
 
+	var cellEditingProd = Ext.create('Ext.grid.plugin.CellEditing', {
+		clicksToEdit: 2
+	});
+
+
+	function gridTooltipProd(view) {
+		view.tip = Ext.create('Ext.tip.ToolTip', {
+			delegate: view.itemSelector,
+			html: 'Double click on the Qty to edit',
+			target: view.el,
+			trackMouse: true
+		});
+	}
+
+	Ext.define('DataGridProd2', {
+		extend: 'Ext.data.Model',
+		fields: [
+			{name: 'fs_kode_cabang', type: 'string'},
+			{name: 'fs_kode_jabatan', type: 'string'},
+			{name: 'fs_nik', type: 'string'}
+		]
+	});
+
+	var grupKodeTrans3 = Ext.create('Ext.data.Store', {
+		autoLoad: false,
+		model: 'DataGridProd2',
+		proxy: {
+			actionMethods: {
+				read: 'POST'
+			},
+			reader: {
+				rootProperty: 'hasil',
+				totalProperty: 'total',
+				type: 'json',
+			},
+			type: 'ajax',
+			url: 'mastersdm/grid_sdm2'
+		},
+		listeners: {
+			beforeload: function(store) {
+				Ext.apply(store.getProxy().extraParams, {
+				'fs_nik': Ext.getCmp('txtNikk').getValue()
+				});
+			},
+			load: function() {
+				var xtotal = grupKodeTrans3.getCount();
+				
+				if (xtotal > 0) {
+					var store = gridKode2.getStore();
+					var xqty = 0;
+					
+					gridKode2.getSelectionModel().select(0);
+				}
+			}
+		}
+	});
+
 	var grupEditNik= Ext.create('Ext.data.Store', {
 		fields: [
 			'fs_nik','fs_email','fs_username','fs_password'
@@ -1895,6 +1952,9 @@ Ext.onReady(function() {
 			cari: {
 				cls: 'x-form-search-trigger',
 				handler: function() {
+
+				Ext.getCmp('txtKodeJabatan').setValue('');
+					Ext.getCmp('cboJabatan').setValue('');
 					winCariJabatan.show();
 					winCariJabatan.center();
 				}
@@ -2391,8 +2451,8 @@ Ext.onReady(function() {
 														handler: fnCekSimpan3
 													},{
 														iconCls: 'icon-reset',
-														text: 'Reset',
-														handler: fnReset2
+														text: 'AKTIF/NONAKTIF',
+														handler: fnUserAktif
 													}]}
 												]
 											}]
@@ -2419,6 +2479,110 @@ Ext.onReady(function() {
 				win2.hide();
 			}
 		}]
+	});
+
+
+   	var gridKode2 = Ext.create('Ext.grid.Panel', {
+		anchor: '100%',
+		defaultType: 'textfield',
+		height: 470,
+		sortableColumns: false,
+		store: grupKodeTrans3,
+		columns: [{
+			xtype: 'rownumberer',
+			width: 25
+		},{
+			dataIndex: 'fs_kode_cabang',
+			text: 'Kode cabang',
+			flex: 0.6,
+			menuDisabled: true
+		},{
+			dataIndex: 'fs_nama_cabang',
+			text: 'Nama Cabang',
+			flex: 1.25,
+			menuDisabled: true
+		},
+		{
+			dataIndex: 'fs_kode_cabang',
+			hidden:true,
+			menuDisabled: true
+		},
+		{
+			dataIndex: 'fs_kode_jabatan',
+			hidden:true,
+			menuDisabled: true
+		},{
+			dataIndex: 'fs_nama_jabatan',
+			text: 'Nama Fungsi',
+			flex: 1.25,
+			menuDisabled: true
+		}],
+		plugins: [
+			cellEditingProd
+		],
+		viewConfig: {
+			getRowClass: function() {
+				return 'rowwrap';
+			},
+			listeners: {
+				render: gridTooltipProd
+			},
+			markDirty: false,
+			stripeRows: true
+		},
+		bbar: [
+		/*{
+			iconCls: 'icon-delete',
+			itemId: 'removeData',
+			text: 'Delete',
+			handler: function() {
+				var record = gridKode.getSelectionModel().getSelection()[0];
+				
+				var xseqno = record.get('fs_seqno');
+				var arr_seqno = Array();
+				
+				grupGridReg.clearFilter();
+				var store = gridReg.getStore();
+				store.each(function(record, idx) {
+					arr_seqno.push(record.get('fs_seqno').trim());
+				});
+				
+				var xtotal = grupGridReg.getCount()-1;
+				var xxseqno = '';
+				for (i=xtotal;i>=0;i--) {
+					xxseqno = arr_seqno[i];
+					
+					if (xseqno.trim() == xxseqno.trim()) {
+						grupGridReg.removeAt(i);
+					}
+				}
+				
+				gridReg.getView().refresh();
+				
+				var sm = gridProd.getSelectionModel();
+				cellEditingProd.cancelEdit();
+				grupGridProd.remove(sm.getSelection());
+				gridProd.getView().refresh();
+				if (grupGridProd.getCount() > 0) {
+					sm.select(0);
+				}
+				Ext.getCmp('txtProdAktif').setValue('');
+				Ext.getCmp('txtProdAktif2').setValue('');
+			},
+			disabled: true
+		},*/{
+			xtype: 'tbfill',
+		},{
+			value: '<*Double click on the Qty to edit>',
+			xtype: 'displayfield'
+		}],
+		viewConfig: {
+			getRowClass: function() {
+				return 'rowwrap';
+			},
+			markDirty: false,
+			stripeRows: true
+		}
 	});
 
      var win = Ext.create('Ext.window.Window', {
@@ -2547,26 +2711,14 @@ Ext.onReady(function() {
 													]
 											}]
 										},{
-											flex: 1,
+											flex: 2,
 											layout: 'anchor',
 											xtype: 'container',
 											items: [{
 												style: 'padding: 5px;',
-												title: 'Cabang',
+												title: 'Struktur Fungsi',
 												items: [
-													gridDetil3,
-												]
-											}]
-										},
-										{
-											flex: 1,
-											layout: 'anchor',
-											xtype: 'container',
-											items: [{
-												style: 'padding: 5px;',
-												title: 'Jabatan',
-												items: [
-													gridDetil2,
+													gridKode2,
 												]
 											}]
 										}]
@@ -2607,11 +2759,14 @@ Ext.onReady(function() {
 
         	//alert(record.data.fs_nik);
              Ext.getCmp('txtNikk').setValue(record.data.fs_nik);
+
              Ext.getCmp('txtNamaa').setValue(record.data.fs_nama);
              Ext.getCmp('txtTglJoin2').setValue(record.data.fd_tanggal_bergabung);
 
+
              vMask.show();
-			 win.show();
+             gridKode2.getStore().load();
+             win.show();
         		/*var f = Ext.create('Ext.form.Panel', {
 					border: false,
 					frame: true,
@@ -3207,6 +3362,55 @@ Ext.onReady(function() {
 		});
 	}
 
+	function fnAktif() {
+	
+		Ext.Ajax.on('beforerequest', fnMaskShow);
+		Ext.Ajax.on('requestcomplete', fnMaskHide);
+		Ext.Ajax.on('requestexception', fnMaskHide);
+		
+		Ext.Ajax.request({
+			method: 'POST',
+			url: 'masteruser/Aktif',
+			params: {
+				'fs_nik': Ext.getCmp('txtNikEdit').getValue()
+			},
+			success: function(response) {
+				var xText = Ext.decode(response.responseText);
+				
+				Ext.MessageBox.show({
+					buttons: Ext.MessageBox.OK,
+					closable: false,
+					icon: Ext.MessageBox.INFO,
+					msg: xText.hasil,
+					title: 'Siap',
+					fn: function(btn) {
+
+
+				Ext.getCmp('txtNikEdit').setValue('');
+				Ext.getCmp('cboNIK2').setValue('');
+				Ext.getCmp('txtEmailEdit').setValue('');
+				Ext.getCmp('txtPasswordEdit').setValue('');
+				Ext.getCmp('txtUsernameEdit').setValue('');
+						vMask.hide();
+						win2.hide();
+				}
+				});
+				//fnReset();
+			},
+			failure: function(response) {
+				var xText = Ext.decode(response.responseText);
+				Ext.MessageBox.show({
+					buttons: Ext.MessageBox.OK,
+					closable: false,
+					icon: Ext.MessageBox.INFO,
+					msg: 'Simpan Gagal, Koneksi Gagal',
+					title: 'Siap'
+				});
+				fnMaskHide();
+			}
+		});
+	}
+
 	function fnSaveMac() {
 	
 		Ext.Ajax.on('beforerequest', fnMaskShow);
@@ -3374,6 +3578,65 @@ Ext.onReady(function() {
 								fn: function(btn) {
 									if (btn == 'yes') {
 										fnSimpan4();
+									}
+								}
+							});
+						}
+					}
+				},
+				failure: function(response) {
+					var xText = Ext.decode(response.responseText);
+					Ext.MessageBox.show({
+						buttons: Ext.MessageBox.OK,
+						closable: false,
+						icon: Ext.MessageBox.INFO,
+						msg: 'Simpan Gagal, Koneksi Gagal',
+						title: 'Siap'
+					});
+					fnMaskHide();
+				}
+			});
+		}
+	}
+
+	function fnUserAktif() {
+		if (this.up('form').getForm().isValid()) {
+			Ext.Ajax.on('beforerequest', fnMaskShow);
+			Ext.Ajax.on('requestcomplete', fnMaskHide);
+			Ext.Ajax.on('requestexception', fnMaskHide);
+			
+			Ext.Ajax.request({
+				method: 'POST',
+				url: 'masteruser/CekAktif',
+				params: {
+					'fs_nik': Ext.getCmp('txtNikEdit').getValue()
+				},
+				success: function(response) {
+					var xText = Ext.decode(response.responseText);
+					
+					if (xText.sukses === false) {
+						Ext.MessageBox.show({
+							buttons: Ext.MessageBox.OK,
+							closable: false,
+							icon: Ext.MessageBox.INFO,
+							msg: xText.hasil,
+							title: 'Siap'
+						});
+					}
+					else {
+						if (xText.sukses === true && xText.hasil == 'lanjut') {
+							fnAktif();
+						}
+						else {
+							Ext.MessageBox.show({
+								buttons: Ext.MessageBox.YESNO,
+								closable: false,
+								icon: Ext.MessageBox.QUESTION,
+								msg: xText.hasil,
+								title: 'Siap',
+								fn: function(btn) {
+									if (btn == 'yes') {
+										fnAktif();
 									}
 								}
 							});
@@ -3647,35 +3910,6 @@ Ext.onReady(function() {
 					text: 'Reset',
 					handler: fnReset1
 				}]
-			},
-			{
-				bodyStyle: 'background-color: '.concat(gBasePanel),
-				border: false,
-				frame: false,
-				title: 'Registrasi MAC Address',
-				xtype: 'form',
-				items: [
-						cboCabang3,
-						txtKodeCabang3,
-						cboMac,
-						//txtKodeCabang4,
-						{
-						bodyCls: 'x-panel-body-default-framed',
-
-						buttonAlign:'left',	
-						buttons: [{
-						layout: 'anchor',
-						iconCls: 'icon-save',
-						text: 'Save',
-						handler: fnCekMac
-						},
-						{
-						layout: 'anchor',
-						iconCls: 'icon-delete',
-						text: 'Unregistrasi Mac Address',
-						handler: fnUnregMac
-						}]}
-						]
 			}
 			]
 		}]

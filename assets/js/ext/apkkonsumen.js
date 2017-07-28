@@ -18020,11 +18020,13 @@ var grupTrx22 = Ext.create('Ext.data.Store', {
 													var totalDP2 = Ext.getCmp('txtTotalDp').getValue();
 													var totaltranscair2 = Ext.getCmp('txtTotalTrans2').getValue();
 															var biayaadmin2 = Ext.getCmp('txtBiayaAdm').getValue();
+
 															var premigross2 = Ext.getCmp('txtPremiGros').getValue();
 															var preminet2 = Ext.getCmp('txtPremiNet').getValue();
 															var dimuka2 = Ext.getCmp('txtAngsuranDimuka').getValue();
 															var uangmuka2 = Ext.getCmp('txtUangMuka').getValue();
 															var pokok2 = Ext.getCmp('txtPokokPembiayaanDealer').getValue();
+
 
 
 															if(totaltranscair2>0){
@@ -18044,6 +18046,7 @@ var grupTrx22 = Ext.create('Ext.data.Store', {
 
 															}
 															
+
 															function format1(n) {
 													 		   return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
 															}
