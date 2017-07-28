@@ -1,6 +1,6 @@
 <?php
 
-class Masteruser extends CI_Controller
+class Changepass extends CI_Controller
 {
 	function __construct()
 	{
@@ -12,7 +12,7 @@ class Masteruser extends CI_Controller
 	{
 		if (trim($this->session->userdata('gUserLevel')) <> '')
 		{
-			$this->load->view('vmasteruser');
+			$this->load->view('vchangepass');
 		}
 		else
 		{
@@ -73,10 +73,10 @@ class Masteruser extends CI_Controller
 		
 		$this->load->model('mMasterUser');
 
-		$sSQL = $this->mMasterUser->ambilNikAll2($xdNik,$cari);
+		$sSQL = $this->mMasterUser->ambilNikAll3($cari);
 		$xTotal = $sSQL->num_rows();
 		
-		$sSQL = $this->mMasterUser->ambilNik2($xdNik,$cari,$nStart,$nLimit);
+		$sSQL = $this->mMasterUser->ambilNik3($cari,$nStart,$nLimit);
 		$this->db->query(NOLOCK2);
 
 
@@ -91,8 +91,7 @@ class Masteruser extends CI_Controller
 					'fs_nik'	=> trim($xRow->fs_nik),
 					'fs_nama'	=> trim($xRow->fs_nama),
 					'fs_username'	=> trim($xRow->fs_username),
-					'fs_password'	=> trim($xRow->fs_password),
-					'fs_email'	=> trim($xRow->fs_email)
+					'fs_password'	=> trim($xRow->fs_password)
 
 				);
 			}
@@ -351,8 +350,8 @@ class Masteruser extends CI_Controller
 			else
 			{
 				$xHasil = array(
-					'sukses'	=> true,
-					'hasil'		=> 'User avaliable , Lanjut ?'
+					'sukses'	=> false,
+					'hasil'		=> 'User sudah ada!'
 				);
 				echo json_encode($xHasil);
 			}
@@ -490,43 +489,6 @@ class Masteruser extends CI_Controller
 				$xHasil = array(
 					'sukses'	=> true,
 					'hasil'		=> 'Anda Yakin ingin meng update user ini ?'
-				);
-				echo json_encode($xHasil);
-			}
-			else
-			{
-				$xHasil = array(
-					'sukses'	=> false,
-					'hasil'		=> 'User belum terdaftar'
-				);
-				echo json_encode($xHasil);
-			}
-		}
-		else
-		{
-			$xHasil = array(
-				'sukses'	=> false,
-				'hasil'		=> 'Simpan Gagal, Nik tidak diketahui!!'
-			);
-			echo json_encode($xHasil);
-		}
-	}
-
-
-	function CekAktif()
-	{
-		$xdNik = trim($this->input->post('fs_nik'));
-
-
-		if ($xdNik <> '')
-		{
-			$this->load->model('mMasterUser');
-			$sSQL = $this->mMasterUser->CekNik($xdNik);
-			if ($sSQL->num_rows() > 1)
-			{
-				$xHasil = array(
-					'sukses'	=> true,
-					'hasil'		=> 'Anda Yakin ingin Aktif/Nonaktifkan user ini ?'
 				);
 				echo json_encode($xHasil);
 			}
@@ -776,95 +738,6 @@ class Masteruser extends CI_Controller
 		}
 	}
 
-	function Aktif()
-	{
-
-
-		$nik = trim($this->input->post('fs_nik'));
-
-
-		$cekkk = $this->db->where('fs_nik',$nik)->from('tm_sdm')->get()->row();
-		$cekkks = $this->db->where('fs_nik',$nik)->from('tm_user')->get()->row();
-		$fs_aktif = $cekkk->fs_aktif;
-		$fs_aktif_user = $cekkks->fs_aktif;
-
-		$xupdate = false;
-
-		if($fs_aktif==1){
-
-			$this->db->where('fs_nik',$nik)->delete('tm_struktur_fungsi');
-
-			$data = array(
-					'fs_aktif'	=> '0',
-				);
-			 $this->db->where('fs_nik',$nik)->update('tm_user',$data);
-
-			 $datas = array(
-					'fs_aktif'	=> '0',
-				);
-			 $this->db->where('fs_nik',$nik)->update('tm_sdm',$datas);
-			
-
-			 if ($xupdate == false)
-				{
-					$hasil = array(
-						'sukses'	=> true,
-						'hasil'		=> 'User telah di Nonaktifkan!'
-					);
-					echo json_encode($hasil);
-				}
-				else
-				{
-					$hasil = array(
-						'sukses'	=> true,
-							'hasil'		=> 'User telah di Nonaktifkan!'
-					);
-					echo json_encode($hasil);
-				}
-
-			
-
-		
-		}else {
-
-
-
-			$data = array(
-					'fs_aktif'	=> '1',
-				);
-			 $this->db->where('fs_nik',$nik)->update('tm_user',$data);
-
-			 $datas = array(
-					'fs_aktif'	=> '1',
-				);
-			 $this->db->where('fs_nik',$nik)->update('tm_sdm',$datas);
-			
-
-			 if ($xupdate == false)
-				{
-					$hasil = array(
-						'sukses'	=> true,
-						'hasil'		=> 'User telah di Aktifkan!'
-					);
-					echo json_encode($hasil);
-				}
-				else
-				{
-					$hasil = array(
-						'sukses'	=> true,
-							'hasil'		=> 'User telah di Aktifkan!'
-					);
-					echo json_encode($hasil);
-				}
-
-
-		}
-
-		
-		
-		
-	}
-
 	function Simpan2()
 	{
 		$nStart = trim($this->input->post('start'));
@@ -885,33 +758,34 @@ class Masteruser extends CI_Controller
 		//$sSQL = $this->mMasterCabang->listMaster2($nik,$nStart,$nLimit);
 		//$this->db->query(NOLOCK2);
 		
-		$sqlssss = $this->db->where('fs_nik',$nik)->where('fs_aktif','0')->from('tm_user')->get()->row();
-		if($sqlssss){
+		$xArr = array();
+		if ($sSQL->num_rows() > 0)
+		{
+			foreach ($sSQL->result() as $xRow)
+			{
 
-			$datas = array(
+				$data = array(
+					'fs_nik'	=> trim($nik),
 					'fs_aktif'	=> '1',
+					'fs_kode_cabang'	=> trim($xRow->fs_kode_cabang),
 					'fs_nm_user'	=> trim($nama),
 					'fs_username'	=> trim($username),
 					'fs_email'	=> trim($email),
 					'fs_password'	=> trim(md5($password)),
 					'fs_iduser_buat'		=> trim($this->session->userdata('gUser')),
-					'fd_last_login'		=> trim(date('Y-m-d H:i:s')),
 					'fd_tanggal_buat'		=> trim($tglJoin)
 				);
+				$this->db->insert('tm_user', $data);
 
-		$this->db->where('fs_nik',$nik)->where('fs_aktif','0')->update('tm_user',$datas);
-
+			}
 		}
-		
-				
-
 
 		$datas = array(
 					'fs_flag_login'	=> '1',
 					'fs_aktif'	=> '1'
 		);
 
-        $this->db->where('fs_nik',$nik)->where('fs_aktif','1')->update('tm_sdm',$datas);
+        $this->db->where('fs_nik',$nik)->where('fs_aktif','1')->where('fs_flag_login','0')->update('tm_sdm',$datas);
 
 
 		$xupdate = false;

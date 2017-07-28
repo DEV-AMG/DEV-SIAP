@@ -77,6 +77,7 @@ class Mastersdm extends CI_Controller
 				$xArr[] = array(
 					'fs_nik'	=> trim($xRow->fs_nik),
 					'fs_nama'	=> trim($xRow->fs_nama),
+					'fs_kode_cabang'	=> trim($xRow->fs_kode_cabang),
 					'fd_tanggal_bergabung'	=> trim($xRow->fd_tanggal_bergabung)
 
 				);
@@ -339,6 +340,101 @@ class Mastersdm extends CI_Controller
 		}
 	}
 
+	function grid_trans()
+	{
+
+		$nStart = trim($this->input->post('start'));
+		$nLimit = '500';
+
+		$cari = trim($this->input->post('fs_cari'));
+		
+		$this->load->model('mSearch');
+
+		$sSQL = $this->mSearch->ambilFungsiAll($cari);
+		$xTotal = $sSQL->num_rows();
+		
+		$sSQL = $this->mSearch->ambilFungsi($cari,$nStart,$nLimit);
+		$this->db->query(NOLOCK2);
+
+		$xArr = array();
+		if ($sSQL->num_rows() > 0)
+		{
+			foreach ($sSQL->result() as $xRow)
+			{
+				$xArr[] = array(
+					'fs_kode_cabang'	=> trim($xRow->fs_kode_cabang),
+					'fs_kode_jabatan'	=> trim($xRow->fs_kode_jabatan),
+					'fs_nik'	=> trim($xRow->fs_nik)
+				);
+			}
+		}
+		echo '({"total":"'.$xTotal.'","hasil":'.json_encode($xArr).'})';
+	}
+
+	
+	/*function grid_sdm()
+	{
+
+		$nStart = trim($this->input->post('start'));
+		$nLimit = '500';
+
+		$cari = trim($this->input->post('fs_cari'));
+		
+		$this->load->model('mSearch');
+
+		$sSQL = $this->mSearch->ambilSdmAll($cari);
+		$xTotal = $sSQL->num_rows();
+		
+		$sSQL = $this->mSearch->ambilSdm($cari,$nStart,$nLimit);
+		$this->db->query(NOLOCK2);
+
+		$xArr = array();
+		if ($sSQL->num_rows() > 0)
+		{
+			foreach ($sSQL->result() as $xRow)
+			{
+				$xArr[] = array(
+					'fs_kode_jabatan'	=> trim($xRow->fs_kode_jabatan),
+					'fs_kode_cabang'	=> trim($xRow->fs_kode_cabang)
+				);
+			}
+		}
+		echo '({"total":"'.$xTotal.'","hasil":'.json_encode($xArr).'})';
+	}*/
+
+	function grid_sdm2()
+	{
+
+		$nStart = trim($this->input->post('start'));
+		$nLimit = '500';
+
+		$cari = trim($this->input->post('fs_nik'));
+
+		
+		$this->load->model('mSearch');
+
+		$sSQL = $this->mSearch->ambilSdmAll2($cari);
+		$xTotal = $sSQL->num_rows();
+		
+		$sSQL = $this->mSearch->ambilSdm2($cari,$nStart,$nLimit);
+		$this->db->query(NOLOCK2);
+
+		$xArr = array();
+		if ($sSQL->num_rows() > 0)
+		{
+			foreach ($sSQL->result() as $xRow)
+			{
+				$xArr[] = array(
+					'fs_kode_jabatan'	=> trim($xRow->fs_kode_jabatan),
+					'fs_nama_jabatan'	=> trim($xRow->fs_nama_jabatan),
+					'fs_nama_cabang'	=> trim($xRow->fs_nama_cabang),
+					'fs_kode_cabang'	=> trim($xRow->fs_kode_cabang)
+				);
+			}
+		}
+		echo '({"total":"'.$xTotal.'","hasil":'.json_encode($xArr).'})';
+	}
+
 	function CekCab()
 	{
 		/*$this->db->from('tm_jabatan')
@@ -558,6 +654,126 @@ class Mastersdm extends CI_Controller
 
 	}
 
+	function Update()
+	{
+
+
+		$nik = trim($this->input->post('fs_nik'));
+		$tglJoin = trim($this->input->post('fd_tanggal_bergabung'));
+		$cabang = trim($this->input->post('fs_kode_cabang_fix'));
+
+		//$this->db->where('fs_nik',$nik)->delete('tm_struktur_fungsi');
+		//$this->load->model('mUser','',true);
+		//$ssql = $this->mUser->cek_level($level);
+		
+		/*$xupdate = false;
+		if ($ssql->num_rows() > 0)
+		{
+			$xupdate == true;
+		}
+		
+		//hapus detail
+		/*$where = "fs_kd_comp = '".trim($this->session->userdata('gComp'))."'
+					AND fs_level = '".trim($level)."'";
+		
+		$this->db->where($where);
+		$this->db->delete('tm_parlevel');
+		//eof hapus detail*/
+		
+		//simpan detail
+
+		$xupdate = false;
+
+		$kdcabang = explode('|', trim($this->input->post('fs_kode_cabang')));
+		$nmcabang = explode('|', trim($this->input->post('fs_nama_cabang')));
+		$kdjabatan = explode('|', trim($this->input->post('fs_kode_jabatan')));
+
+
+		$jml = count($kdcabang) - 1;
+		if ($jml != 0)
+		{
+			for ($i=1; $i<=$jml; $i++)
+			{	
+
+
+				$sqlss = $this->db->where('fs_nik',$nik)->where('fs_kode_cabang',$kdcabang[$i])->where('fs_kode_jabatan',$kdjabatan[$i])->from('tm_struktur_fungsi')->get()->row();
+
+				if($sqlss){
+
+
+
+				}else {
+
+					$data = array(
+					'fs_nik'	=> trim($nik),
+					'fs_kode_cabang'	=> trim($kdcabang[$i]),
+					'fs_kode_jabatan'	=> trim($kdjabatan[$i]),
+					'fs_iduser_buat'		=> trim($this->session->userdata('gUser')),
+					'fd_tanggal_buat'		=> trim(date('Y-m-d H:i:s'))
+					);
+					$this->db->insert('tm_struktur_fungsi', $data);
+
+					$sqlz = $this->db->where('fs_nik',$nik)->from('tm_user')->get()->row();
+
+					$fs_aktif= $sqlz->fs_aktif;
+					$fs_nik= $sqlz->fs_nik;
+					$fs_kode_cabang= $sqlz->fs_kode_cabang;
+					$fs_username= $sqlz->fs_username;
+					$fs_password= $sqlz->fs_password;
+					$fs_email= $sqlz->fs_email;
+					$fs_nm_user= $sqlz->fs_nm_user;
+					$fd_last_login= $sqlz->fd_last_login;
+					$fs_iduser_buat= $sqlz->fs_iduser_buat;
+					$fd_tanggal_buat= $sqlz->fd_tanggal_buat;	
+
+
+					$sqlzs = $this->db->where('fs_nik',$nik)->where('fs_kode_cabang',$kdcabang[$i])->from('tm_user')->get()->row();
+					if($sqlzs){
+
+					}
+					else {
+
+
+						$data2 = array(
+					'fs_aktif'	=> trim($fs_aktif),
+					'fs_nik'	=> trim($fs_nik),
+					'fs_kode_cabang'	=> $kdcabang[$i],
+					'fs_username'	=> trim($fs_username),
+					'fs_password'	=> trim($fs_password),
+					'fs_email'	=> trim($fs_email),
+					'fs_nm_user'	=> trim($fs_nm_user),
+					'fd_last_login'	=> trim($fd_last_login),
+					'fs_iduser_buat'	=> trim($fs_iduser_buat),
+					'fd_tanggal_buat'		=> trim(date('Y-m-d H:i:s'))
+					);
+					$this->db->insert('tm_user', $data2);
+
+					}
+					
+
+				}
+
+				
+			}
+		}
+
+		if ($xupdate == false)
+		{
+			$hasil = array(
+				'sukses'	=> true,
+				'hasil'		=> 'Update Struktur SDM Success'
+			);
+			echo json_encode($hasil);
+		}
+		else
+		{
+			$hasil = array(
+				'sukses'	=> true,
+				'hasil'		=> 'Saving SDM Update Success'
+			);
+			echo json_encode($hasil);
+		}
+	}
 
 	function Simpan()
 	{
@@ -596,11 +812,9 @@ class Mastersdm extends CI_Controller
 
 		$kdcabang = explode('|', trim($this->input->post('fs_kode_cabang')));
 		$nmcabang = explode('|', trim($this->input->post('fs_nama_cabang')));
-
 		$kdjabatan = explode('|', trim($this->input->post('fs_kode_jabatan')));
 		
 		$jml = count($kdcabang) - 1;
-		$jml2 = count($kdjabatan) - 1;
 		if ($jml != 0)
 		{
 			for ($i=1; $i<=$jml; $i++)
@@ -608,26 +822,28 @@ class Mastersdm extends CI_Controller
 				$data = array(
 					'fs_nik'	=> trim($nik),
 					'fs_kode_cabang'	=> trim($kdcabang[$i]),
-					'fs_iduser_buat'		=> trim($this->session->userdata('gUser')),
-					'fd_tanggal_buat'		=> trim(date('Y-m-d H:i:s'))
-				);
-				$this->db->insert('tm_struktur_cabang', $data);
-			}
-		}
-
-		if ($jml2 != 0)
-		{
-			for ($i=1; $i<=$jml2; $i++)
-			{
-				$data = array(
-					'fs_nik'	=> trim($nik),
 					'fs_kode_jabatan'	=> trim($kdjabatan[$i]),
 					'fs_iduser_buat'		=> trim($this->session->userdata('gUser')),
 					'fd_tanggal_buat'		=> trim(date('Y-m-d H:i:s'))
 				);
-				$this->db->insert('tm_struktur_jabatan', $data);
+				$this->db->insert('tm_struktur_fungsi', $data);
+
+				$datax = array(
+					'fs_aktif'	=> '0',
+					'fs_nik'	=> trim($nik),
+					'fs_kode_cabang'	=> trim($kdcabang[$i]),
+					'fs_nm_user'	=> trim($nama),
+					'fs_username'	=> '',
+					'fs_password'	=> '',
+					'fs_email'	=> '',
+					'fd_last_login'		=> trim(date('Y-m-d H:i:s')),
+					'fs_iduser_buat'		=> trim($this->session->userdata('gUser')),
+					'fd_tanggal_buat'		=> trim(date('Y-m-d H:i:s'))
+				);
+				$this->db->insert('tm_user', $datax);
 			}
 		}
+
 		//eof simpan detail
 		$data = array(
 					'fs_nik'	=> trim($nik),
@@ -669,16 +885,20 @@ class Mastersdm extends CI_Controller
 
 		$xupdate = false;
 
-		$this->db->where('fs_nik',$nik)->delete('tm_struktur_jabatan');
-		$this->db->where('fs_nik',$nik)->delete('tm_struktur_cabang');
-		$this->db->where('fs_nik',$nik)->delete('tm_user');
+		$this->db->where('fs_nik',$nik)->delete('tm_struktur_fungsi');
 
 		$data = array(
 					'fs_flag_login'	=> '0',
 					'fs_aktif'	=> '0'
 		);
 
-           $this->db->where('fs_nik',$nik)->where('fs_aktif','1')->update('tm_sdm',$data);
+        $this->db->where('fs_nik',$nik)->update('tm_sdm',$data);
+
+        $datas = array(
+					'fs_aktif'	=> '0'
+		);
+
+        $this->db->where('fs_nik',$nik)->update('tm_user',$datas);
 
 		 
 		if ($xupdate == false)
