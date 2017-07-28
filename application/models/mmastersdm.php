@@ -61,7 +61,7 @@ class Mmastersdm extends CI_Model
 		if (trim($sCari) <> '')
 		{
 			$xSQL = $xSQL.("
-			WHERE fs_nik='".trim($sCari)."' AND fs_aktif=1");
+			OR fs_nik='".trim($sCari)."' AND fs_aktif=1");
 
 		}
 
@@ -145,7 +145,7 @@ class Mmastersdm extends CI_Model
 		if (trim($sCari) <> '')
 		{
 			$xSQL = $xSQL.("
-			WHERE fs_nik='".trim($sCari)."' AND fs_flag_login=1");
+			OR fs_nik='".trim($sCari)."' AND fs_flag_login=1");
 
 		}
 

@@ -13,10 +13,30 @@ class Mmasteruser extends CI_Model
 	{
 		$xSQL = ("
 			SELECT *
-			FROM	tm_sdm
+			FROM	tm_sdm 
 			ORDER BY fs_nik
 		");
 		
+		$sSQL = $this->db->query($xSQL);
+		return $sSQL;
+	}
+
+	function ambilNikAll3($sCari)
+	{
+		$xSQL = ("
+			SELECT a.*,b.*
+			FROM tm_sdm a JOIN tm_user b on a.fs_nik=b.fs_nik where b.fs_aktif=1");
+
+		if (trim($sCari) <> '')
+		{
+			$xSQL = $xSQL.("
+			WHERE a.fs_nik LIKE '%".trim($sCari)."%'");
+
+		}
+		$xSQL = $xSQL.("
+			GROUP BY a.fs_nik
+		");
+
 		$sSQL = $this->db->query($xSQL);
 		return $sSQL;
 	}
@@ -60,14 +80,14 @@ class Mmasteruser extends CI_Model
 	function ambilNikAll2($sCari,$sCari2)
 	{
 		$xSQL = ("
-			SELECT a.*, b.* FROM tm_user a JOIN tm_sdm b ON a.fs_nik=b.fs_nik where b.fs_aktif=1 and b.fs_flag_login=1  group by a.fs_username
+			SELECT a.*, b.* FROM tm_user a JOIN tm_sdm b ON a.fs_nik=b.fs_nik
 		");
 
 
 		if (trim($sCari) <> '')
 		{
 			$xSQL = $xSQL.("
-			AND b.fs_nik='".trim($sCari)."' AND fb.s_flag_login=1 AND b.fs_aktif=1 ");
+			WHERE b.fs_nik='".trim($sCari)."'");
 
 		}
 
@@ -75,9 +95,14 @@ class Mmasteruser extends CI_Model
 		{
 			$xSQL = $xSQL.("
 			AND b.fs_nik LIKE '%".trim($sCari2)."%'
-					OR b.fs_nama LIKE '%".trim($sCari2)."%' AND b.fs_flag_login=1 AND b.fs_aktif=1");
+					OR b.fs_nama LIKE '%".trim($sCari2)."%'");
 
 		}
+
+		
+		$xSQL = $xSQL.("
+			GROUP BY b.fs_nik
+		");
 		
 		$sSQL = $this->db->query($xSQL);
 		return $sSQL;
@@ -129,7 +154,7 @@ class Mmasteruser extends CI_Model
 	function ambilNik2($sCari,$sCari2,$nStart,$nLimit)
 	{
 		$xSQL = ("
-			SELECT a.*, b.* FROM tm_user a JOIN tm_sdm b ON a.fs_nik=b.fs_nik where b.fs_aktif=1 and b.fs_flag_login=1  group by a.fs_username");
+			SELECT a.*, b.* FROM tm_user a JOIN tm_sdm b ON a.fs_nik=b.fs_nik");
 		
 
 		if (trim($sCari) <> '')
@@ -149,7 +174,7 @@ class Mmasteruser extends CI_Model
 
 		
 		$xSQL = $xSQL.("
-			ORDER BY b.fs_nik LIMIT ".$nStart.",".$nLimit."
+			GROUP BY b.fs_nik LIMIT ".$nStart.",".$nLimit."
 		");
 		
 		$sSQL = $this->db->query($xSQL);
@@ -171,10 +196,13 @@ class Mmasteruser extends CI_Model
 	function ambilUserAll($kodecab)
 	{
 		$xSQL = ("
-			SELECT *
-			FROM tm_user
-			WHERE	fs_kode_cabang = '".trim($kodecab)."'");
+			SELECT a.*,b.*
+			FROM tm_sdm a JOIN tm_user b on a.fs_nik=b.fs_nik where b.fs_aktif=1 AND b.fs_kode_cabang = '".trim($kodecab)."'");
 		
+		$xSQL = $xSQL.("
+			GROUP BY a.fs_nik
+		");
+
 		$sSQL = $this->db->query($xSQL);
 		return $sSQL;
 	}
@@ -188,6 +216,28 @@ class Mmasteruser extends CI_Model
 		
 		$xSQL = $xSQL.("
 			ORDER BY fs_nik LIMIT ".$nStart.",".$nLimit."
+		");
+		
+		$sSQL = $this->db->query($xSQL);
+		return $sSQL;
+	}
+
+
+	function ambilNik3($sCari,$nStart,$nLimit)
+	{
+		$xSQL = ("
+			SELECT a.*,b.*
+			FROM tm_sdm a JOIN tm_user b on a.fs_nik=b.fs_nik where b.fs_aktif=1");
+
+		if (trim($sCari) <> '')
+		{
+			$xSQL = $xSQL.("
+			OR a.fs_nik LIKE '%".trim($sCari)."%'");
+
+		}
+	
+		$xSQL = $xSQL.("
+			GROUP BY a.fs_nik LIMIT ".$nStart.",".$nLimit."
 		");
 		
 		$sSQL = $this->db->query($xSQL);
@@ -243,12 +293,12 @@ class Mmasteruser extends CI_Model
 	function ambilUser($kodecab,$nStart,$nLimit)
 	{
 		$xSQL = ("
-			SELECT	*
-			FROM tm_user WHERE fs_kode_cabang = '".trim($kodecab)."'");
+			SELECT a.*,b.*
+			FROM tm_sdm a JOIN tm_user b on a.fs_nik=b.fs_nik where b.fs_aktif=1 AND b.fs_kode_cabang = '".trim($kodecab)."'");
 	
 		
 		$xSQL = $xSQL.("
-			ORDER BY fs_kode_cabang LIMIT ".$nStart.",".$nLimit."
+			GROUP BY a.fs_nik LIMIT ".$nStart.",".$nLimit."
 		");
 		
 		$sSQL = $this->db->query($xSQL);
@@ -275,11 +325,11 @@ class Mmasteruser extends CI_Model
 	function CekNik($xdNik)
 	{
 		$xSQL = ("
-			SELECT	fs_nik
+			SELECT *
 			FROM	tm_user
 			WHERE	fs_nik = '".trim($xdNik)."'
 		");
-		
+
 		$sSQL = $this->db->query($xSQL);
 		return $sSQL;
 	}

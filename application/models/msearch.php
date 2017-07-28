@@ -131,6 +131,66 @@ class MSearch extends CI_Model
 		return $sSQL;
 	}
 
+	function ambilSdm($sCari)
+	{
+		$xSQL = ("
+			SELECT	*
+			FROM	tm_struktur_fungsi");
+	
+		
+		$xSQL = $xSQL.("
+			ORDER BY fs_kode_cabang ASC
+		");
+		
+		$sSQL = $this->db->query($xSQL);
+		return $sSQL;
+	}
+
+	function ambilSdm2($sCari)
+	{
+		$xSQL = ("
+			SELECT	a.*,b.*, c.*
+			FROM	tm_struktur_fungsi a JOIN tm_cabang b ON a.fs_kode_cabang=b.fs_kode_cabang JOIN tm_jabatan c ON a.fs_kode_jabatan=c.fs_kode_jabatan");
+	
+		if (trim($sCari) <> '')
+		{
+			$xSQL = $xSQL.("
+			WHERE a.fs_nik LIKE '%".trim($sCari)."%'");
+
+		}
+
+		$xSQL = $xSQL.("
+			ORDER BY a.fs_kode_cabang ASC
+		");
+		
+		$sSQL = $this->db->query($xSQL);
+		return $sSQL;
+	}
+
+	function ambilFungsi($sCari)
+	{
+		$xSQL = ("
+			SELECT	*
+			FROM	tm_struktur_fungsi");
+		
+
+		if (trim($sCari) <> '')
+		{
+			$xSQL = $xSQL.("
+			WHERE fs_kode_cabang LIKE '%".trim($sCari)."%'
+			OR fs_kode_jabatan LIKE '%".trim($sCari)."%'
+			OR fs_nik LIKE '%".trim($sCari)."%'");
+
+		}
+		
+		$xSQL = $xSQL.("
+			ORDER BY fs_kode_cabang ASC
+		");
+		
+		$sSQL = $this->db->query($xSQL);
+		return $sSQL;
+	}
+
 	function ambil_pola($namakoderef)
 	{
 		$xSQL = ("
@@ -202,6 +262,70 @@ class MSearch extends CI_Model
 
 		$xSQL = $xSQL.("
 			ORDER BY fs_kode_transaksi ASC
+		");
+		
+		$sSQL = $this->db->query($xSQL);
+		return $sSQL;
+	}
+
+	
+
+
+	function ambilSdmAll2($sCari)
+	{
+		$xSQL = ("
+			SELECT	a.*,b.*, c.*
+			FROM	tm_struktur_fungsi a JOIN tm_cabang b ON a.fs_kode_cabang=b.fs_kode_cabang JOIN tm_jabatan c ON a.fs_kode_jabatan=c.fs_kode_jabatan");
+		
+		
+		if (trim($sCari) <> '')
+		{
+			$xSQL = $xSQL.("
+			WHERE a.fs_nik LIKE '%".trim($sCari)."%'");
+
+		}
+	
+		$xSQL = $xSQL.("
+			ORDER BY a.fs_kode_cabang ASC
+		");
+		
+		$sSQL = $this->db->query($xSQL);
+		return $sSQL;
+	}
+
+	function ambilSdmAll($sCari)
+	{
+		$xSQL = ("
+			SELECT	*
+			FROM	tm_struktur_fungsi");
+	
+	
+		$xSQL = $xSQL.("
+			ORDER BY fs_kode_cabang ASC
+		");
+		
+		$sSQL = $this->db->query($xSQL);
+		return $sSQL;
+	}
+
+	function ambilFungsiAll($sCari)
+	{
+		$xSQL = ("
+			SELECT	*
+			FROM	tm_struktur_fungsi");
+	
+		
+		if (trim($sCari) <> '')
+		{
+			$xSQL = $xSQL.("
+			WHERE fs_kode_cabang LIKE '%".trim($sCari)."%'
+			OR fs_kode_jabatan LIKE '%".trim($sCari)."%'
+			OR fs_nik LIKE '%".trim($sCari)."%'");
+
+		}
+
+		$xSQL = $xSQL.("
+			ORDER BY fs_kode_cabang ASC
 		");
 		
 		$sSQL = $this->db->query($xSQL);

@@ -46,7 +46,7 @@ class Mmastercabang extends CI_Model
 	{
 		$xSQL = ("
 			SELECT	a.*,b.*
-			FROM	tm_cabang a JOIN tm_struktur_cabang b on a.fs_kode_cabang=b.fs_kode_cabang
+			FROM	tm_cabang a JOIN tm_struktur_fungsi b on a.fs_kode_cabang=b.fs_kode_cabang
 			WHERE	b.fs_nik = '".trim($nik)."'");
 	
 		
@@ -58,7 +58,7 @@ class Mmastercabang extends CI_Model
 	{
 		$xSQL = ("
 			SELECT	a.*,b.*
-			FROM	tm_cabang a JOIN tm_struktur_cabang b on a.fs_kode_cabang=b.fs_kode_cabang
+			FROM	tm_cabang a JOIN tm_struktur_fungsi b on a.fs_kode_cabang=b.fs_kode_cabang
 			WHERE	b.fs_nik = '".trim($nik)."'");
 	
 		
