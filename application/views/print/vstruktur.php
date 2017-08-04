@@ -47,7 +47,7 @@
 			<td width="3%" align="left">1.</td>
 			<td width="35%" align="left">Jenis Kegiatan Usaha</td>
 			<td width="1%">:</td>
-			<td width="61%" align="left"><?php if (!empty($kategori_usaha->fs_nama_sektor_ekonomi)) { echo $kategori_usaha->fs_nama_sektor_ekonomi; } ?></td>
+			<td width="61%" align="left" height="20"><?php if (!empty($kategori_usaha->fs_nama_sektor_ekonomi)) { echo $kategori_usaha->fs_nama_sektor_ekonomi; } ?></td>
 		</tr>
 		<tr>
 			<td width="3%" align="left">2.</td>
@@ -99,7 +99,7 @@
 			<td width="3%" align="left">c.</td>
 			<td width="32%" align="left">Warna</td>
 			<td width="1%">:</td>
-			<td width="61%" align="left"><?php echo $detail->fs_warna_kendaraan; ?></td>
+			<td width="61%" align="left"><?php echo strtoupper($detail->fs_warna_kendaraan); ?></td>
 		</tr>
 		<tr>
 			<td width="3%" align="left"></td>
@@ -121,7 +121,7 @@
 			<td width="32%" align="left">Nomor Polisi</td>
 			<td width="1%">:</td>
 			<td width="61%" align="left">
-				<?php echo $detail->fs_kode_wilayah_no_polisi . $detail->fs_no_polisi . $detail->fs_kode_akhir_wilayah_no_polisi; ?>
+				<?php if (!empty($detail->fs_kode_wilayah_no_polisi . $detail->fs_no_polisi . $detail->fs_kode_akhir_wilayah_no_polisi)) { echo $detail->fs_kode_wilayah_no_polisi . $detail->fs_no_polisi . $detail->fs_kode_akhir_wilayah_no_polisi; } else { echo '-'; } ?>
 			</td>
 		</tr>
 		<tr>
@@ -135,7 +135,7 @@
 			<td width="3%" align="left">4.</td>
 			<td width="35%" align="left">Penyedia Barang dan/atau Jasa</td>
 			<td width="1%">:</td>
-			<td width="61%" align="left"><?php ?></td>
+			<td width="61%" align="left"><?php if (!empty($dealer->fs_nama_dealer)) {echo $dealer->fs_nama_dealer; } else { echo '-'; } ?></td>
 		</tr>
 		<tr>
 			<td width="3%" align="left">5.</td>
@@ -153,7 +153,12 @@
 			<td width="3%" align="left">7.</td>
 			<td width="35%" align="left">Pokok Hutang</td>
 			<td width="1%">:</td>
-			<td width="61%" align="left"></td>
+			<td width="61%" align="left">
+				<?php
+					$jml = $detail->fn_harga_otr - $detail->fn_uang_muka_dealer + $detail->fn_asuransi_dikredit_dealer;
+					echo "Rp. " . number_format($jml) . ",-";
+				?>
+			</td>
 		</tr>
 		<tr>
 			<td width="3%" align="left">8.</td>
@@ -189,21 +194,37 @@
 			<td width="3%" align="left">a.</td>
 			<td width="32%" align="left">Perusahaan Asuransi</td>
 			<td width="1%">:</td>
-			<td width="61%" align="left"></td>
+			<td width="61%" align="left"><?php if (!empty($asuransi->fs_nama_perusahaan_asuransi)) { echo $asuransi->fs_nama_perusahaan_asuransi; } else { echo '-'; } ?></td>
 		</tr>
 		<tr>
 			<td width="3%" align="left"></td>
 			<td width="3%" align="left">b.</td>
 			<td width="32%" align="left">Jenis Asuransi</td>
 			<td width="1%">:</td>
-			<td width="61%" align="left"><?php if (!empty($jenis_asuransi->fs_nama_referensi)){ echo $jenis_asuransi->fs_nama_referensi; } ?></td>
+			<td width="61%" align="left"><?php if (!empty($jenis_asuransi->fs_nama_referensi)){ echo $jenis_asuransi->fs_nama_referensi; } else { echo '-'; } ?></td>
 		</tr>
 		<tr>
 			<td width="3%" align="left"></td>
 			<td width="3%" align="left">c.</td>
 			<td width="32%" align="left">Jangka Waktu Pertanggungan</td>
 			<td width="1%">:</td>
-			<td width="61%" align="left"><?php echo $detail->fn_tahun_ke; ?></td>
+			<td width="61%" align="left">
+				<?php  
+					if (!empty($jenis_asuransi->fs_nama_referensi)) 
+					{
+						if ($jenis_asuransi->fs_nama_referensi <> 'MIX')
+						{
+							echo $asuransi_notmix->fn_bulan_masa_angsuran_dealer;
+						}
+						else 
+						{
+							echo $asuransi_mix->fn_tahun_ke;
+						}
+					}
+					else 
+						{ echo '-'; }
+				?>	
+			</td>
 		</tr>
 		<tr>
 			<td width="3%" align="left"></td>
@@ -215,7 +236,8 @@
 		<tr>
 			<td width="3%" align="left">13.</td>
 			<td width="35%" align="left">Asuransi Jiwa</td>
-			<td width="62%">-</td>
+			<td width="1%">:</td>
+			<td width="61%" align="left">-</td>
 		</tr>
 		<tr>
 			<td width="3%" align="left">14.</td>
@@ -227,40 +249,40 @@
 			<td width="3%" align="left">a.</td>
 			<td width="32%" align="left">Biaya Survey</td>
 			<td width="1%">:</td>
-			<td width="61%" align="left"><?php echo $detail->fs_kode_transaksi; ?></td>
+			<td width="61%" align="left"><?php if (!empty($biaya_survey->fn_nilai_transaksi)) { echo "Rp. " . number_format($biaya_survey->fn_nilai_transaksi) . ",-"; } else { echo "-"; } ?></td>
 		</tr>
 		<tr>
 			<td width="3%" align="left"></td>
 			<td width="3%" align="left">b.</td>
 			<td width="32%" align="left">Biaya Asuransi / Penjaminan /Fidusia</td>
 			<td width="1%">:</td>
-			<td width="61%" align="left"></td>
+			<td width="61%" align="left"><?php if (!empty($biaya_asuransi->fn_nilai_transaksi)) { echo "Rp. " . number_format($biaya_asuransi->fn_nilai_transaksi) . ",-"; } else { echo "-"; } ?></td>
 		</tr>
 		<tr>
 			<td width="3%" align="left"></td>
 			<td width="3%" align="left">c.</td>
 			<td width="32%" align="left">Biaya Provisi</td>
 			<td width="1%">:</td>
-			<td width="61%" align="left"></td>
+			<td width="61%" align="left"><?php if (!empty($biaya_provisi->fn_nilai_transaksi)) { echo "Rp. " . number_format($biaya_provisi->fn_nilai_transaksi) . ",-"; } else { echo "-"; } ?></td>
 		</tr>
 		<tr>
 			<td width="3%" align="left"></td>
 			<td width="3%" align="left">d.</td>
 			<td width="32%" align="left">Biaya Notaris</td>
 			<td width="1%">:</td>
-			<td width="61%" align="left"></td>
+			<td width="61%" align="left"><?php if (!empty($biaya_notaris->fn_nilai_transaksi)) { echo "Rp. " . number_format($biaya_notaris->fn_nilai_transaksi) . ",-"; } else { echo "-"; } ?></td>
 		</tr>
 		<tr>
 			<td width="3%" align="left">15.</td>
 			<td width="35%" align="left">Denda Keterlambatan Angsuran</td>
 			<td width="1%">:</td>
-			<td width="61%"></td>
+			<td width="61%" align="left"><?php if(!empty($denda_perhari->fs_nilai1_referensi)) { echo $denda_perhari->fs_nilai1_referensi * 100 . "%"; } else { echo '-'; }?></td>
 		</tr>
 		<tr>
 			<td width="3%" align="left">16.</td>
 			<td width="35%" align="left">Pinalti Pelunasan</td>
 			<td width="1%">:</td>
-			<td width="61%" align="left"></td>
+			<td width="61%" align="left"><?php if(!empty($pinalti_lunas->fs_nilai1_referensi)) { echo $pinalti_lunas->fs_nilai1_referensi . "%"; } else { echo '-'; }?></td>
 		</tr>
 		<tr>
 			<td width="3%" align="left">17.</td>
