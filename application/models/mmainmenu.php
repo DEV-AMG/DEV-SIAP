@@ -86,7 +86,6 @@ class MMainMenu extends CI_Model
 			INNER JOIN tg_menu b ON a.fs_kd_child = b.fs_kd_child and a.fs_kd_parent = b.fs_kd_parent WHERE a.fs_level in(".$xKdUser.")
 		");
 		
-		echo $xSQL;die;
 		$sSQL = $this->db->query($xSQL);
 		return $sSQL;
 	}
@@ -106,7 +105,7 @@ class MMainMenu extends CI_Model
 	{
 		$xSQL = ("
 			SELECT	fs_nik , fs_kode_jabatan
-			FROM	tm_struktur_jabatan
+			FROM	tm_struktur_fungsi
 		");
 		
 		if (trim($xdNik) <> '')
