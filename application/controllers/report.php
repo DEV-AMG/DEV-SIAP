@@ -90,8 +90,8 @@ class Report extends CI_Controller
 		$data['detailltransaksi'] = $this->mReport->detailltransaksi($kdcab, $apk);
 		$data['asuransi'] = $this->mReport->asuransi($kdcab, $apk);
 		$data['pengurus'] = $this->mReport->pengurus($kdcab, $apk);
-		$data['data_asuransi_notmix'] = $this->mReport->data_asuransi_notmix($kdcab, $apk);
 		$data['data_asuransi'] = $this->mReport->data_asuransi($kdcab, $apk);
+		$data['data_asuransi_notmix'] = $this->mReport->data_asuransi_notmix($kdcab, $apk);
 		$data['data_perluasan'] = $this->mReport->data_perluasan($kdcab, $apk);
 		$data['internal_checking'] = $this->mReport->internal_checking($kdcab, $apk);
 		$data['reject_checking'] = $this->mReport->reject_checking($kdcab, $apk);
@@ -150,8 +150,8 @@ class Report extends CI_Controller
 		$data['denda_perhari'] = $this->mReport->denda_perhari();
 		$data['detailltransaksi'] = $this->mReport->detailltransaksi($kdcab, $apk);
 		$data['asuransi'] = $this->mReport->asuransi($kdcab, $apk);
-		$data['data_asuransi_notmix'] = $this->mReport->data_asuransi_notmix($kdcab, $apk);
 		$data['data_asuransi'] = $this->mReport->data_asuransi($kdcab, $apk);
+		$data['data_asuransi_notmix'] = $this->mReport->data_asuransi_notmix($kdcab, $apk);
 		$data['data_perluasan'] = $this->mReport->data_perluasan($kdcab, $apk);
 		$data['internal_checking'] = $this->mReport->internal_checking($kdcab, $apk);
 		$data['reject_checking'] = $this->mReport->reject_checking($kdcab, $apk);
@@ -238,7 +238,7 @@ class Report extends CI_Controller
 		if ($kop == 1) {
 			$pdf->setCellHeightRatio(1.24);
 		} else {
-			$pdf->setCellHeightRatio(1.32);
+			$pdf->setCellHeightRatio(1.28);
 		}
 		$pdf->AddPage('P', 'A4');
 		$pdf->writeHTML($html, true, false, true, false, '');

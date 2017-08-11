@@ -673,8 +673,8 @@ class MReport extends CI_Model
 		$xSQL = ("
 			SELECT b.fn_tahun_ke,
 			b.fs_jenis_asuransi
-			FROM tx_apk a LEFT JOIN tx_apk_asuransi b ON 
-			b.fn_no_apk = a.fn_no_apk AND a.fs_kode_cabang = b.fs_kode_cabang
+			FROM tx_apk a JOIN tx_apk_asuransi b ON 
+			b.fn_no_apk = a.fn_no_apk AND b.fs_kode_cabang = a.fs_kode_cabang
 			WHERE a.fn_no_apk = '".trim($nApk)."'
 			AND a.fs_kode_cabang = '".trim($sKdCab)."'
 			ORDER BY b.fn_tahun_ke ASC
