@@ -686,7 +686,8 @@ Ext.onReady(function() {
 					msg: xText.hasil,
 					title: 'SIAP'
 				});
-				if (xtext.sukses === true) {
+				
+				if (xText.sukses === true) {
 					var tabPanel = Ext.ComponentQuery.query('tabpanel')[0];
 					tabPanel.setActiveTab('tab1');
 					fnReset();
