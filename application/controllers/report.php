@@ -236,7 +236,7 @@ class Report extends CI_Controller
 		$pdf->SetDisplayMode('real', 'default');
 		$pdf->SetFont('', '', 8.5, '', false);
 		if ($kop == 1) {
-			$pdf->setCellHeightRatio(1.24);
+			$pdf->setCellHeightRatio(1.23);
 		} else {
 			$pdf->setCellHeightRatio(1.28);
 		}
