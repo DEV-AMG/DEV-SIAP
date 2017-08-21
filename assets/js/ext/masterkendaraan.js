@@ -78,7 +78,8 @@ Ext.onReady(function() {
 
 	var grupMerkKendaraan= Ext.create('Ext.data.Store', {
 		fields: [
-			'fs_nama_referensi','fs_nilai1_referensi','fs_nilai2_referensi'
+			'fs_merek_kendaraan','fs_kode_kendaraan_lama','fs_kode_kendaraan_lama',
+			'fs_model_kendaraan','fs_jenis_kendaraan'
 		],
 		proxy: {
 			actionMethods: {
@@ -206,15 +207,15 @@ Ext.onReady(function() {
 		}),
 		columns: [
 			{xtype: 'rownumberer', width: 45},
-			{text: 'Nama Referensi', dataIndex: 'fs_nama_referensi', menuDisabled: true, width: 240},
-			{text: 'Nilai Referensi 1', dataIndex: 'fs_nilai1_referensi', menuDisabled: true, width: 120},
-			{text: 'Nilai Referensi 2', dataIndex: 'fs_nilai2_referensi', menuDisabled: true, width: 140},
+			{text: 'Merk Kendaraan', dataIndex: 'fs_merek_kendaraan', menuDisabled: true, width: 100},
+			{text: 'Model Kendaraan', dataIndex: 'fs_model_kendaraan', menuDisabled: true, width: 200},
+			{text: 'Jenis Kendaraan', dataIndex: 'fs_jenis_kendaraan', menuDisabled: true, width: 140},
 			
 		],
 		listeners: {
 			itemdblclick: function(grid, record)
 			{
-				Ext.getCmp('cboMerkKendaraan').setValue(record.get('fs_nama_referensi'));
+				Ext.getCmp('cboMerkKendaraan').setValue(record.get('fs_merek_kendaraan'));
 				
 				
 				winCariMerkKendaraan.hide();
@@ -429,7 +430,7 @@ Ext.onReady(function() {
 	var txtSilinderKendaraan = {
 		afterLabelTextTpl: required,
 		allowBlank: false,
-		anchor: '20%',
+		anchor: '50%',
 		fieldLabel: 'Silinder Kendaraan',
 		id: 'txtSilinderKendaraan',
 		maxLength: 4,
@@ -442,11 +443,10 @@ Ext.onReady(function() {
 	var txtKodeModelKendaraan = {
 		afterLabelTextTpl: required,
 		allowBlank: false,
-		anchor: '50%',
+		anchor: '80%',
 		fieldLabel: 'Kode Model Kendaraan',
 		id: 'txtKodeModelKendaraan',
 		maxLength: 15,
-		maskRe: /[zxcvbnmasdfghjklqwertyuiopZXCVBNNMASDFGHJKLQWERTYUIOP1234567890.,-]/,
 		enforceMaxLength: true,
 		name: 'txtKodeModelKendaraan',
 		xtype: 'textfield'
@@ -455,12 +455,11 @@ Ext.onReady(function() {
 	var txtKodeLama =  {
 		afterLabelTextTpl: required,
 		allowBlank: false,
-		anchor: '50%',
+		anchor: '80%',
 		fieldLabel: 'Kode Lama',
 		id: 'txtKodeLama',
 		maxLength: 6,
 		enforceMaxLength: true,
-		maskRe: /[zxcvbnmasdfghjklqwertyuiopZXCVBNNMASDFGHJKLQWERTYUIOP1234567890.,-]/,
 		name: 'txtKodeLama',
 		xtype: 'textfield'
 	};
@@ -468,12 +467,11 @@ Ext.onReady(function() {
 	var txtNamaModelKendaraan =  {
 		afterLabelTextTpl: required,
 		allowBlank: false,
-		anchor: '50%',
+		anchor: '80%',
 		fieldLabel: 'Nama Model Kendaraan',
 		id: 'txtNamaModelKendaraan',
 		maxLength:50,
 		enforceMaxLength: true,
-		maskRe: /[z xcvbnmasdfghjklqwertyuiopZXCVBNNMASDFGHJKLQWERTYUIOP1234567890.,-]/,
 		name: 'txtNamaModelKendaraan',
 		xtype: 'textfield'
 	};
@@ -481,13 +479,12 @@ Ext.onReady(function() {
 	var txtNamaMerek = {
 		afterLabelTextTpl: required,
 		allowBlank: false,
-		anchor: '50%',
+		anchor: '80%',
 		fieldLabel: 'Nama Merek',
 		id: 'txtNamaMerek',
 		enforceMaxLength: true,
 		minLength: '0',
 		maxLength: '30', 
-		maskRe: /[zxcvbnmasdfghjklqwertyuiopZXCVBNNMASDFGHJKLQWERTYUIOP .]/,
 		name: 'txtNamaMerek',
 		xtype: 'textfield'
 	};
@@ -884,7 +881,7 @@ Ext.onReady(function() {
 					fieldDefaults: {
 						labelAlign: 'right',
 						labelSeparator: '',
-						labelWidth: 115,
+						labelWidth: 140,
 						msgTarget: 'side'
 					},
 					style: 'padding: 5px;',
@@ -916,7 +913,7 @@ Ext.onReady(function() {
 					fieldDefaults: {
 						labelAlign: 'right',
 						labelSeparator: '',
-						labelWidth: 115,
+						labelWidth: 140,
 						msgTarget: 'side'
 					},
 					style: 'padding: 5px;',
