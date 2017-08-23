@@ -168,7 +168,7 @@ class TransferApk extends CI_Controller
 							$row->fs_catatan_analisa, '', $row->fs_salesman, '',
 							date("Ymd", strtotime($row->fd_tanggal_buat)), 
 							(string) substr($row->fs_kerja_sejak_konsumen, -4, 4).substr($row->fs_kerja_sejak_konsumen, 0, 2), (string) substr($row->fs_tinggal_sejak, -4, 4).substr($row->fs_tinggal_sejak, 0, 2),
-							'mamik wulandari', $row->fs_jenis_asuransi, '', $row->fs_handphone_konsumen,
+							$row->fs_iduser_buat, $row->fs_jenis_asuransi, '', $row->fs_handphone_konsumen,
 							$row->fs_email_konsumen, '', 'X', 1, 1, $row->fs_iduser_buat, 1, 1, $row->fs_iduser_buat, 
 							0, 0, '', '', $row->fs_ktp_konsumen, date("Ymd", strtotime($row->fs_masa_ktp_konsumen)), $row->fs_npwp_konsumen,
 							'', $row->fs_nama_ibu_kandung, $row->fs_usaha_pekerjaan_konsumen, $row->fs_kelurahan_konsumen,
