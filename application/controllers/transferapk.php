@@ -230,10 +230,16 @@ class TransferApk extends CI_Controller
 
 				$dtl = $this->mTransferApk->detail($noapk[$i], $kdcabang);
 				foreach ($dtl->result() as $row) {
+						if (!empty($row->fs_cair_ke_dealer)) { 
+							$cair_dealer = $row->fs_cair_ke_dealer; 
+						} else {
+							$cair_dealer = '';
+						}
+						
 						dbase_add_record($db2, array(
 							'S', $row->fn_no_apk, $row->fs_kode_transaksi, 
 							$row->fs_nama_transaksi, $row->fn_nilai_transaksi, 
-							$row->fs_tagih_ke_konsumen, if (!empty($row->fs_cair_ke_dealer)) { $row->fs_cair_ke_dealer; }, ''
+							$row->fs_tagih_ke_konsumen, $cair_dealer , ''
 						));
 				}
 
