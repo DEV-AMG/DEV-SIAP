@@ -100,21 +100,17 @@ class Kontrak extends CI_Controller
 			$this->load->model('mKontrak');
 			$xkddoc = $this->mKontrak->dokumen($kddok);
 			$xhitung = $this->mKontrak->hitung($kddok, $kdcab, $noapk);
-			$xtotal = $xhitung->num_rows();
-
-			if ($xtotal <= $xkddoc->fn_batas_cetak)
-			{
-				$hasil = array(
-					'sukses'	=> true,
-					'hasil'		=> 'lanjut'
-				);
-				echo json_encode($hasil);
-			}
 			
-			if ($xtotal > $xkddoc->fn_batas_cetak) {
+			if ($xhitung->num_rows() > $xkddoc->fn_batas_cetak) {
 				$hasil = array(
 					'sukses'	=> true,
 					'hasil'		=> 'habis'
+				);
+				echo json_encode($hasil);
+			} else {
+				$hasil = array(
+					'sukses'	=> true,
+					'hasil'		=> 'lanjut'
 				);
 				echo json_encode($hasil);
 			}
