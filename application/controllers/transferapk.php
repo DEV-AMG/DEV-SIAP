@@ -186,7 +186,7 @@ class TransferApk extends CI_Controller
 							'A', $row->fn_no_apk, $row->fs_jenis_pembiayaan, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 							$row->fs_garasi, $row->fs_repeat_order, $row->fs_kondisi_lingkungan, $row->fs_kondisi_kantor,
 							$row->fs_skala_perusahaan_konsumen, 0, 0, 0, '', $row->fs_score, $row->fs_grade,
-							$row->fs_kode_paket, '', '', $row->fn_premi_asuransi_gross, $row->fn_jumlah_kali_kredit,
+							$row->fs_kode_paket, '', '', $row->fn_premi_asuransi, $row->fn_jumlah_kali_kredit,
 							$row->fs_pertama_kali_kredit, '', '', '', '', '', $row->fs_komersial, 
 							$row->fs_nama_perusahaan_konsumen
 						));
