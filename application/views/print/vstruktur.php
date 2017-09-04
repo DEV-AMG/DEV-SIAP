@@ -113,7 +113,7 @@
 			<td width="3%" align="left">e.</td>
 			<td width="32%" align="left">Nomor Rangka / Mesin</td>
 			<td width="1%">:</td>
-			<td width="61%" align="left"><?php echo $detail->fs_no_rangka; ?></td>
+			<td width="61%" align="left"><?php echo $detail->fs_no_rangka .' / '. $detail->fs_no_mesin; ?></td>
 		</tr>
 		<tr>
 			<td width="3%" align="left"></td>

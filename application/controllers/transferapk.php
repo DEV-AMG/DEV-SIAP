@@ -136,6 +136,17 @@ class TransferApk extends CI_Controller
 				$single = $this->mTransferApk->single($noapk[$i], $kdcabang);
 				foreach ($single->result() as $row) {
 
+						// REVISI 'karena di database sudah terlanjur jadi = T'
+						if (!empty($row->fs_komersial)) { 
+							if ($row->fs_komersial == 'T') {
+								$komersial = 'N';
+							} else {
+								$komersial = $row->fs_komersial;
+							}
+						} else {
+							$komersial = '';
+						}
+
 						dbase_add_record($db1, array(
 							'A', $row->fn_no_apk, $row->fs_jenis_pembiayaan, 
 							date("Ymd", strtotime($row->fd_tgl_apk)), $row->fs_kode_lokasi, 
@@ -186,8 +197,8 @@ class TransferApk extends CI_Controller
 							'A', $row->fn_no_apk, $row->fs_jenis_pembiayaan, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 							$row->fs_garasi, $row->fs_repeat_order, $row->fs_kondisi_lingkungan, $row->fs_kondisi_kantor,
 							$row->fs_skala_perusahaan_konsumen, 0, 0, 0, '', $row->fs_score, $row->fs_grade,
-							$row->fs_kode_paket, '', '', $row->fn_premi_asuransi_gross, $row->fn_jumlah_kali_kredit,
-							$row->fs_pertama_kali_kredit, '', '', '', '', '', $row->fs_komersial, 
+							$row->fs_kode_paket, '', '', $row->fn_premi_asuransi, $row->fn_jumlah_kali_kredit,
+							$row->fs_pertama_kali_kredit, '', '', '', '', '', $komersial, 
 							$row->fs_nama_perusahaan_konsumen
 						));
 
